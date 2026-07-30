@@ -1,0 +1,1230 @@
+==============================================================================================================
+BLUE_AGENT_0 ACTION SPACE
+==============================================================================================================
+Total Actions : 82
+Valid Actions : 50
+Invalid Actions : 32
+==============================================================================================================
+ID    VALID    ACTION LABEL
+==============================================================================================================
+0     ✔        Analyse restricted_zone_a_subnet_server_host_0
+1     ✔        Analyse restricted_zone_a_subnet_server_host_1
+2     ✔        Analyse restricted_zone_a_subnet_server_host_2
+3     ✔        Analyse restricted_zone_a_subnet_server_host_3
+4     ✘        [Invalid] Analyse restricted_zone_a_subnet_server_host_4
+5     ✘        [Invalid] Analyse restricted_zone_a_subnet_server_host_5
+6     ✔        Analyse restricted_zone_a_subnet_user_host_0
+7     ✔        Analyse restricted_zone_a_subnet_user_host_1
+8     ✔        Analyse restricted_zone_a_subnet_user_host_2
+9     ✔        Analyse restricted_zone_a_subnet_user_host_3
+10    ✘        [Invalid] Analyse restricted_zone_a_subnet_user_host_4
+11    ✘        [Invalid] Analyse restricted_zone_a_subnet_user_host_5
+12    ✘        [Invalid] Analyse restricted_zone_a_subnet_user_host_6
+13    ✘        [Invalid] Analyse restricted_zone_a_subnet_user_host_7
+14    ✘        [Invalid] Analyse restricted_zone_a_subnet_user_host_8
+15    ✘        [Invalid] Analyse restricted_zone_a_subnet_user_host_9
+16    ✔        Monitor
+17    ✔        Remove restricted_zone_a_subnet_server_host_0
+18    ✔        Remove restricted_zone_a_subnet_server_host_1
+19    ✔        Remove restricted_zone_a_subnet_server_host_2
+20    ✔        Remove restricted_zone_a_subnet_server_host_3
+21    ✘        [Invalid] Remove restricted_zone_a_subnet_server_host_4
+22    ✘        [Invalid] Remove restricted_zone_a_subnet_server_host_5
+23    ✔        Remove restricted_zone_a_subnet_user_host_0
+24    ✔        Remove restricted_zone_a_subnet_user_host_1
+25    ✔        Remove restricted_zone_a_subnet_user_host_2
+26    ✔        Remove restricted_zone_a_subnet_user_host_3
+27    ✘        [Invalid] Remove restricted_zone_a_subnet_user_host_4
+28    ✘        [Invalid] Remove restricted_zone_a_subnet_user_host_5
+29    ✘        [Invalid] Remove restricted_zone_a_subnet_user_host_6
+30    ✘        [Invalid] Remove restricted_zone_a_subnet_user_host_7
+31    ✘        [Invalid] Remove restricted_zone_a_subnet_user_host_8
+32    ✘        [Invalid] Remove restricted_zone_a_subnet_user_host_9
+33    ✔        Restore restricted_zone_a_subnet_server_host_0
+34    ✔        Restore restricted_zone_a_subnet_server_host_1
+35    ✔        Restore restricted_zone_a_subnet_server_host_2
+36    ✔        Restore restricted_zone_a_subnet_server_host_3
+37    ✘        [Invalid] Restore restricted_zone_a_subnet_server_host_4
+38    ✘        [Invalid] Restore restricted_zone_a_subnet_server_host_5
+39    ✔        Restore restricted_zone_a_subnet_user_host_0
+40    ✔        Restore restricted_zone_a_subnet_user_host_1
+41    ✔        Restore restricted_zone_a_subnet_user_host_2
+42    ✔        Restore restricted_zone_a_subnet_user_host_3
+43    ✘        [Invalid] Restore restricted_zone_a_subnet_user_host_4
+44    ✘        [Invalid] Restore restricted_zone_a_subnet_user_host_5
+45    ✘        [Invalid] Restore restricted_zone_a_subnet_user_host_6
+46    ✘        [Invalid] Restore restricted_zone_a_subnet_user_host_7
+47    ✘        [Invalid] Restore restricted_zone_a_subnet_user_host_8
+48    ✘        [Invalid] Restore restricted_zone_a_subnet_user_host_9
+49    ✔        Sleep
+50    ✔        AllowTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- admin_network_subnet (10.0.146.0/24)
+51    ✔        AllowTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- contractor_network_subnet (10.0.161.0/24)
+52    ✔        AllowTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- internet_subnet (10.0.252.0/24)
+53    ✔        AllowTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- office_network_subnet (10.0.113.0/24)
+54    ✔        AllowTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- operational_zone_a_subnet (10.0.118.0/24)
+55    ✔        AllowTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- operational_zone_b_subnet (10.0.232.0/24)
+56    ✔        AllowTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- public_access_zone_subnet (10.0.71.0/24)
+57    ✔        AllowTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- restricted_zone_b_subnet (10.0.32.0/24)
+58    ✔        BlockTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- admin_network_subnet (10.0.146.0/24)
+59    ✔        BlockTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- contractor_network_subnet (10.0.161.0/24)
+60    ✔        BlockTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- internet_subnet (10.0.252.0/24)
+61    ✔        BlockTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- office_network_subnet (10.0.113.0/24)
+62    ✔        BlockTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- operational_zone_a_subnet (10.0.118.0/24)
+63    ✔        BlockTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- operational_zone_b_subnet (10.0.232.0/24)
+64    ✔        BlockTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- public_access_zone_subnet (10.0.71.0/24)
+65    ✔        BlockTrafficZone restricted_zone_a_subnet (10.0.220.0/24) <- restricted_zone_b_subnet (10.0.32.0/24)
+66    ✔        DeployDecoy restricted_zone_a_subnet_server_host_0
+67    ✔        DeployDecoy restricted_zone_a_subnet_server_host_1
+68    ✔        DeployDecoy restricted_zone_a_subnet_server_host_2
+69    ✔        DeployDecoy restricted_zone_a_subnet_server_host_3
+70    ✘        [Invalid] DeployDecoy restricted_zone_a_subnet_server_host_4
+71    ✘        [Invalid] DeployDecoy restricted_zone_a_subnet_server_host_5
+72    ✔        DeployDecoy restricted_zone_a_subnet_user_host_0
+73    ✔        DeployDecoy restricted_zone_a_subnet_user_host_1
+74    ✔        DeployDecoy restricted_zone_a_subnet_user_host_2
+75    ✔        DeployDecoy restricted_zone_a_subnet_user_host_3
+76    ✘        [Invalid] DeployDecoy restricted_zone_a_subnet_user_host_4
+77    ✘        [Invalid] DeployDecoy restricted_zone_a_subnet_user_host_5
+78    ✘        [Invalid] DeployDecoy restricted_zone_a_subnet_user_host_6
+79    ✘        [Invalid] DeployDecoy restricted_zone_a_subnet_user_host_7
+80    ✘        [Invalid] DeployDecoy restricted_zone_a_subnet_user_host_8
+81    ✘        [Invalid] DeployDecoy restricted_zone_a_subnet_user_host_9
+
+==============================================================================================================
+BLUE_AGENT_0 ACTION OBJECTS
+==============================================================================================================
+These are the actual CybORG Action objects that the wrapper creates from each action ID.
+
+  0 -> Analyse restricted_zone_a_subnet_server_host_0
+  1 -> Analyse restricted_zone_a_subnet_server_host_1
+  2 -> Analyse restricted_zone_a_subnet_server_host_2
+  3 -> Analyse restricted_zone_a_subnet_server_host_3
+  4 -> Sleep
+  5 -> Sleep
+  6 -> Analyse restricted_zone_a_subnet_user_host_0
+  7 -> Analyse restricted_zone_a_subnet_user_host_1
+  8 -> Analyse restricted_zone_a_subnet_user_host_2
+  9 -> Analyse restricted_zone_a_subnet_user_host_3
+ 10 -> Sleep
+ 11 -> Sleep
+ 12 -> Sleep
+ 13 -> Sleep
+ 14 -> Sleep
+ 15 -> Sleep
+ 16 -> Monitor
+ 17 -> Remove restricted_zone_a_subnet_server_host_0
+ 18 -> Remove restricted_zone_a_subnet_server_host_1
+ 19 -> Remove restricted_zone_a_subnet_server_host_2
+ 20 -> Remove restricted_zone_a_subnet_server_host_3
+ 21 -> Sleep
+ 22 -> Sleep
+ 23 -> Remove restricted_zone_a_subnet_user_host_0
+ 24 -> Remove restricted_zone_a_subnet_user_host_1
+ 25 -> Remove restricted_zone_a_subnet_user_host_2
+ 26 -> Remove restricted_zone_a_subnet_user_host_3
+ 27 -> Sleep
+ 28 -> Sleep
+ 29 -> Sleep
+ 30 -> Sleep
+ 31 -> Sleep
+ 32 -> Sleep
+ 33 -> Restore restricted_zone_a_subnet_server_host_0
+ 34 -> Restore restricted_zone_a_subnet_server_host_1
+ 35 -> Restore restricted_zone_a_subnet_server_host_2
+ 36 -> Restore restricted_zone_a_subnet_server_host_3
+ 37 -> Sleep
+ 38 -> Sleep
+ 39 -> Restore restricted_zone_a_subnet_user_host_0
+ 40 -> Restore restricted_zone_a_subnet_user_host_1
+ 41 -> Restore restricted_zone_a_subnet_user_host_2
+ 42 -> Restore restricted_zone_a_subnet_user_host_3
+ 43 -> Sleep
+ 44 -> Sleep
+ 45 -> Sleep
+ 46 -> Sleep
+ 47 -> Sleep
+ 48 -> Sleep
+ 49 -> Sleep
+ 50 -> AllowTrafficZone
+ 51 -> AllowTrafficZone
+ 52 -> AllowTrafficZone
+ 53 -> AllowTrafficZone
+ 54 -> AllowTrafficZone
+ 55 -> AllowTrafficZone
+ 56 -> AllowTrafficZone
+ 57 -> AllowTrafficZone
+ 58 -> BlockTrafficZone
+ 59 -> BlockTrafficZone
+ 60 -> BlockTrafficZone
+ 61 -> BlockTrafficZone
+ 62 -> BlockTrafficZone
+ 63 -> BlockTrafficZone
+ 64 -> BlockTrafficZone
+ 65 -> BlockTrafficZone
+ 66 -> DeployDecoy restricted_zone_a_subnet_server_host_0
+ 67 -> DeployDecoy restricted_zone_a_subnet_server_host_1
+ 68 -> DeployDecoy restricted_zone_a_subnet_server_host_2
+ 69 -> DeployDecoy restricted_zone_a_subnet_server_host_3
+ 70 -> Sleep
+ 71 -> Sleep
+ 72 -> DeployDecoy restricted_zone_a_subnet_user_host_0
+ 73 -> DeployDecoy restricted_zone_a_subnet_user_host_1
+ 74 -> DeployDecoy restricted_zone_a_subnet_user_host_2
+ 75 -> DeployDecoy restricted_zone_a_subnet_user_host_3
+ 76 -> Sleep
+ 77 -> Sleep
+ 78 -> Sleep
+ 79 -> Sleep
+ 80 -> Sleep
+ 81 -> Sleep
+
+==============================================================================================================
+BLUE_AGENT_1 ACTION SPACE
+==============================================================================================================
+Total Actions : 82
+Valid Actions : 58
+Invalid Actions : 24
+==============================================================================================================
+ID    VALID    ACTION LABEL
+==============================================================================================================
+0     ✔        Analyse operational_zone_a_subnet_server_host_0
+1     ✔        Analyse operational_zone_a_subnet_server_host_1
+2     ✔        Analyse operational_zone_a_subnet_server_host_2
+3     ✔        Analyse operational_zone_a_subnet_server_host_3
+4     ✘        [Invalid] Analyse operational_zone_a_subnet_server_host_4
+5     ✘        [Invalid] Analyse operational_zone_a_subnet_server_host_5
+6     ✔        Analyse operational_zone_a_subnet_user_host_0
+7     ✔        Analyse operational_zone_a_subnet_user_host_1
+8     ✔        Analyse operational_zone_a_subnet_user_host_2
+9     ✔        Analyse operational_zone_a_subnet_user_host_3
+10    ✔        Analyse operational_zone_a_subnet_user_host_4
+11    ✔        Analyse operational_zone_a_subnet_user_host_5
+12    ✘        [Invalid] Analyse operational_zone_a_subnet_user_host_6
+13    ✘        [Invalid] Analyse operational_zone_a_subnet_user_host_7
+14    ✘        [Invalid] Analyse operational_zone_a_subnet_user_host_8
+15    ✘        [Invalid] Analyse operational_zone_a_subnet_user_host_9
+16    ✔        Monitor
+17    ✔        Remove operational_zone_a_subnet_server_host_0
+18    ✔        Remove operational_zone_a_subnet_server_host_1
+19    ✔        Remove operational_zone_a_subnet_server_host_2
+20    ✔        Remove operational_zone_a_subnet_server_host_3
+21    ✘        [Invalid] Remove operational_zone_a_subnet_server_host_4
+22    ✘        [Invalid] Remove operational_zone_a_subnet_server_host_5
+23    ✔        Remove operational_zone_a_subnet_user_host_0
+24    ✔        Remove operational_zone_a_subnet_user_host_1
+25    ✔        Remove operational_zone_a_subnet_user_host_2
+26    ✔        Remove operational_zone_a_subnet_user_host_3
+27    ✔        Remove operational_zone_a_subnet_user_host_4
+28    ✔        Remove operational_zone_a_subnet_user_host_5
+29    ✘        [Invalid] Remove operational_zone_a_subnet_user_host_6
+30    ✘        [Invalid] Remove operational_zone_a_subnet_user_host_7
+31    ✘        [Invalid] Remove operational_zone_a_subnet_user_host_8
+32    ✘        [Invalid] Remove operational_zone_a_subnet_user_host_9
+33    ✔        Restore operational_zone_a_subnet_server_host_0
+34    ✔        Restore operational_zone_a_subnet_server_host_1
+35    ✔        Restore operational_zone_a_subnet_server_host_2
+36    ✔        Restore operational_zone_a_subnet_server_host_3
+37    ✘        [Invalid] Restore operational_zone_a_subnet_server_host_4
+38    ✘        [Invalid] Restore operational_zone_a_subnet_server_host_5
+39    ✔        Restore operational_zone_a_subnet_user_host_0
+40    ✔        Restore operational_zone_a_subnet_user_host_1
+41    ✔        Restore operational_zone_a_subnet_user_host_2
+42    ✔        Restore operational_zone_a_subnet_user_host_3
+43    ✔        Restore operational_zone_a_subnet_user_host_4
+44    ✔        Restore operational_zone_a_subnet_user_host_5
+45    ✘        [Invalid] Restore operational_zone_a_subnet_user_host_6
+46    ✘        [Invalid] Restore operational_zone_a_subnet_user_host_7
+47    ✘        [Invalid] Restore operational_zone_a_subnet_user_host_8
+48    ✘        [Invalid] Restore operational_zone_a_subnet_user_host_9
+49    ✔        Sleep
+50    ✔        AllowTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- admin_network_subnet (10.0.146.0/24)
+51    ✔        AllowTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- contractor_network_subnet (10.0.161.0/24)
+52    ✔        AllowTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- internet_subnet (10.0.252.0/24)
+53    ✔        AllowTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- office_network_subnet (10.0.113.0/24)
+54    ✔        AllowTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- operational_zone_b_subnet (10.0.232.0/24)
+55    ✔        AllowTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- public_access_zone_subnet (10.0.71.0/24)
+56    ✔        AllowTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- restricted_zone_a_subnet (10.0.220.0/24)
+57    ✔        AllowTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- restricted_zone_b_subnet (10.0.32.0/24)
+58    ✔        BlockTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- admin_network_subnet (10.0.146.0/24)
+59    ✔        BlockTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- contractor_network_subnet (10.0.161.0/24)
+60    ✔        BlockTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- internet_subnet (10.0.252.0/24)
+61    ✔        BlockTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- office_network_subnet (10.0.113.0/24)
+62    ✔        BlockTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- operational_zone_b_subnet (10.0.232.0/24)
+63    ✔        BlockTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- public_access_zone_subnet (10.0.71.0/24)
+64    ✔        BlockTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- restricted_zone_a_subnet (10.0.220.0/24)
+65    ✔        BlockTrafficZone operational_zone_a_subnet (10.0.118.0/24) <- restricted_zone_b_subnet (10.0.32.0/24)
+66    ✔        DeployDecoy operational_zone_a_subnet_server_host_0
+67    ✔        DeployDecoy operational_zone_a_subnet_server_host_1
+68    ✔        DeployDecoy operational_zone_a_subnet_server_host_2
+69    ✔        DeployDecoy operational_zone_a_subnet_server_host_3
+70    ✘        [Invalid] DeployDecoy operational_zone_a_subnet_server_host_4
+71    ✘        [Invalid] DeployDecoy operational_zone_a_subnet_server_host_5
+72    ✔        DeployDecoy operational_zone_a_subnet_user_host_0
+73    ✔        DeployDecoy operational_zone_a_subnet_user_host_1
+74    ✔        DeployDecoy operational_zone_a_subnet_user_host_2
+75    ✔        DeployDecoy operational_zone_a_subnet_user_host_3
+76    ✔        DeployDecoy operational_zone_a_subnet_user_host_4
+77    ✔        DeployDecoy operational_zone_a_subnet_user_host_5
+78    ✘        [Invalid] DeployDecoy operational_zone_a_subnet_user_host_6
+79    ✘        [Invalid] DeployDecoy operational_zone_a_subnet_user_host_7
+80    ✘        [Invalid] DeployDecoy operational_zone_a_subnet_user_host_8
+81    ✘        [Invalid] DeployDecoy operational_zone_a_subnet_user_host_9
+
+==============================================================================================================
+BLUE_AGENT_1 ACTION OBJECTS
+==============================================================================================================
+These are the actual CybORG Action objects that the wrapper creates from each action ID.
+
+  0 -> Analyse operational_zone_a_subnet_server_host_0
+  1 -> Analyse operational_zone_a_subnet_server_host_1
+  2 -> Analyse operational_zone_a_subnet_server_host_2
+  3 -> Analyse operational_zone_a_subnet_server_host_3
+  4 -> Sleep
+  5 -> Sleep
+  6 -> Analyse operational_zone_a_subnet_user_host_0
+  7 -> Analyse operational_zone_a_subnet_user_host_1
+  8 -> Analyse operational_zone_a_subnet_user_host_2
+  9 -> Analyse operational_zone_a_subnet_user_host_3
+ 10 -> Analyse operational_zone_a_subnet_user_host_4
+ 11 -> Analyse operational_zone_a_subnet_user_host_5
+ 12 -> Sleep
+ 13 -> Sleep
+ 14 -> Sleep
+ 15 -> Sleep
+ 16 -> Monitor
+ 17 -> Remove operational_zone_a_subnet_server_host_0
+ 18 -> Remove operational_zone_a_subnet_server_host_1
+ 19 -> Remove operational_zone_a_subnet_server_host_2
+ 20 -> Remove operational_zone_a_subnet_server_host_3
+ 21 -> Sleep
+ 22 -> Sleep
+ 23 -> Remove operational_zone_a_subnet_user_host_0
+ 24 -> Remove operational_zone_a_subnet_user_host_1
+ 25 -> Remove operational_zone_a_subnet_user_host_2
+ 26 -> Remove operational_zone_a_subnet_user_host_3
+ 27 -> Remove operational_zone_a_subnet_user_host_4
+ 28 -> Remove operational_zone_a_subnet_user_host_5
+ 29 -> Sleep
+ 30 -> Sleep
+ 31 -> Sleep
+ 32 -> Sleep
+ 33 -> Restore operational_zone_a_subnet_server_host_0
+ 34 -> Restore operational_zone_a_subnet_server_host_1
+ 35 -> Restore operational_zone_a_subnet_server_host_2
+ 36 -> Restore operational_zone_a_subnet_server_host_3
+ 37 -> Sleep
+ 38 -> Sleep
+ 39 -> Restore operational_zone_a_subnet_user_host_0
+ 40 -> Restore operational_zone_a_subnet_user_host_1
+ 41 -> Restore operational_zone_a_subnet_user_host_2
+ 42 -> Restore operational_zone_a_subnet_user_host_3
+ 43 -> Restore operational_zone_a_subnet_user_host_4
+ 44 -> Restore operational_zone_a_subnet_user_host_5
+ 45 -> Sleep
+ 46 -> Sleep
+ 47 -> Sleep
+ 48 -> Sleep
+ 49 -> Sleep
+ 50 -> AllowTrafficZone
+ 51 -> AllowTrafficZone
+ 52 -> AllowTrafficZone
+ 53 -> AllowTrafficZone
+ 54 -> AllowTrafficZone
+ 55 -> AllowTrafficZone
+ 56 -> AllowTrafficZone
+ 57 -> AllowTrafficZone
+ 58 -> BlockTrafficZone
+ 59 -> BlockTrafficZone
+ 60 -> BlockTrafficZone
+ 61 -> BlockTrafficZone
+ 62 -> BlockTrafficZone
+ 63 -> BlockTrafficZone
+ 64 -> BlockTrafficZone
+ 65 -> BlockTrafficZone
+ 66 -> DeployDecoy operational_zone_a_subnet_server_host_0
+ 67 -> DeployDecoy operational_zone_a_subnet_server_host_1
+ 68 -> DeployDecoy operational_zone_a_subnet_server_host_2
+ 69 -> DeployDecoy operational_zone_a_subnet_server_host_3
+ 70 -> Sleep
+ 71 -> Sleep
+ 72 -> DeployDecoy operational_zone_a_subnet_user_host_0
+ 73 -> DeployDecoy operational_zone_a_subnet_user_host_1
+ 74 -> DeployDecoy operational_zone_a_subnet_user_host_2
+ 75 -> DeployDecoy operational_zone_a_subnet_user_host_3
+ 76 -> DeployDecoy operational_zone_a_subnet_user_host_4
+ 77 -> DeployDecoy operational_zone_a_subnet_user_host_5
+ 78 -> Sleep
+ 79 -> Sleep
+ 80 -> Sleep
+ 81 -> Sleep
+
+==============================================================================================================
+BLUE_AGENT_2 ACTION SPACE
+==============================================================================================================
+Total Actions : 82
+Valid Actions : 46
+Invalid Actions : 36
+==============================================================================================================
+ID    VALID    ACTION LABEL
+==============================================================================================================
+0     ✔        Analyse restricted_zone_b_subnet_server_host_0
+1     ✔        Analyse restricted_zone_b_subnet_server_host_1
+2     ✘        [Invalid] Analyse restricted_zone_b_subnet_server_host_2
+3     ✘        [Invalid] Analyse restricted_zone_b_subnet_server_host_3
+4     ✘        [Invalid] Analyse restricted_zone_b_subnet_server_host_4
+5     ✘        [Invalid] Analyse restricted_zone_b_subnet_server_host_5
+6     ✔        Analyse restricted_zone_b_subnet_user_host_0
+7     ✔        Analyse restricted_zone_b_subnet_user_host_1
+8     ✔        Analyse restricted_zone_b_subnet_user_host_2
+9     ✔        Analyse restricted_zone_b_subnet_user_host_3
+10    ✔        Analyse restricted_zone_b_subnet_user_host_4
+11    ✘        [Invalid] Analyse restricted_zone_b_subnet_user_host_5
+12    ✘        [Invalid] Analyse restricted_zone_b_subnet_user_host_6
+13    ✘        [Invalid] Analyse restricted_zone_b_subnet_user_host_7
+14    ✘        [Invalid] Analyse restricted_zone_b_subnet_user_host_8
+15    ✘        [Invalid] Analyse restricted_zone_b_subnet_user_host_9
+16    ✔        Monitor
+17    ✔        Remove restricted_zone_b_subnet_server_host_0
+18    ✔        Remove restricted_zone_b_subnet_server_host_1
+19    ✘        [Invalid] Remove restricted_zone_b_subnet_server_host_2
+20    ✘        [Invalid] Remove restricted_zone_b_subnet_server_host_3
+21    ✘        [Invalid] Remove restricted_zone_b_subnet_server_host_4
+22    ✘        [Invalid] Remove restricted_zone_b_subnet_server_host_5
+23    ✔        Remove restricted_zone_b_subnet_user_host_0
+24    ✔        Remove restricted_zone_b_subnet_user_host_1
+25    ✔        Remove restricted_zone_b_subnet_user_host_2
+26    ✔        Remove restricted_zone_b_subnet_user_host_3
+27    ✔        Remove restricted_zone_b_subnet_user_host_4
+28    ✘        [Invalid] Remove restricted_zone_b_subnet_user_host_5
+29    ✘        [Invalid] Remove restricted_zone_b_subnet_user_host_6
+30    ✘        [Invalid] Remove restricted_zone_b_subnet_user_host_7
+31    ✘        [Invalid] Remove restricted_zone_b_subnet_user_host_8
+32    ✘        [Invalid] Remove restricted_zone_b_subnet_user_host_9
+33    ✔        Restore restricted_zone_b_subnet_server_host_0
+34    ✔        Restore restricted_zone_b_subnet_server_host_1
+35    ✘        [Invalid] Restore restricted_zone_b_subnet_server_host_2
+36    ✘        [Invalid] Restore restricted_zone_b_subnet_server_host_3
+37    ✘        [Invalid] Restore restricted_zone_b_subnet_server_host_4
+38    ✘        [Invalid] Restore restricted_zone_b_subnet_server_host_5
+39    ✔        Restore restricted_zone_b_subnet_user_host_0
+40    ✔        Restore restricted_zone_b_subnet_user_host_1
+41    ✔        Restore restricted_zone_b_subnet_user_host_2
+42    ✔        Restore restricted_zone_b_subnet_user_host_3
+43    ✔        Restore restricted_zone_b_subnet_user_host_4
+44    ✘        [Invalid] Restore restricted_zone_b_subnet_user_host_5
+45    ✘        [Invalid] Restore restricted_zone_b_subnet_user_host_6
+46    ✘        [Invalid] Restore restricted_zone_b_subnet_user_host_7
+47    ✘        [Invalid] Restore restricted_zone_b_subnet_user_host_8
+48    ✘        [Invalid] Restore restricted_zone_b_subnet_user_host_9
+49    ✔        Sleep
+50    ✔        AllowTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- admin_network_subnet (10.0.146.0/24)
+51    ✔        AllowTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- contractor_network_subnet (10.0.161.0/24)
+52    ✔        AllowTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- internet_subnet (10.0.252.0/24)
+53    ✔        AllowTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- office_network_subnet (10.0.113.0/24)
+54    ✔        AllowTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- operational_zone_a_subnet (10.0.118.0/24)
+55    ✔        AllowTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- operational_zone_b_subnet (10.0.232.0/24)
+56    ✔        AllowTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- public_access_zone_subnet (10.0.71.0/24)
+57    ✔        AllowTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- restricted_zone_a_subnet (10.0.220.0/24)
+58    ✔        BlockTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- admin_network_subnet (10.0.146.0/24)
+59    ✔        BlockTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- contractor_network_subnet (10.0.161.0/24)
+60    ✔        BlockTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- internet_subnet (10.0.252.0/24)
+61    ✔        BlockTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- office_network_subnet (10.0.113.0/24)
+62    ✔        BlockTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- operational_zone_a_subnet (10.0.118.0/24)
+63    ✔        BlockTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- operational_zone_b_subnet (10.0.232.0/24)
+64    ✔        BlockTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- public_access_zone_subnet (10.0.71.0/24)
+65    ✔        BlockTrafficZone restricted_zone_b_subnet (10.0.32.0/24) <- restricted_zone_a_subnet (10.0.220.0/24)
+66    ✔        DeployDecoy restricted_zone_b_subnet_server_host_0
+67    ✔        DeployDecoy restricted_zone_b_subnet_server_host_1
+68    ✘        [Invalid] DeployDecoy restricted_zone_b_subnet_server_host_2
+69    ✘        [Invalid] DeployDecoy restricted_zone_b_subnet_server_host_3
+70    ✘        [Invalid] DeployDecoy restricted_zone_b_subnet_server_host_4
+71    ✘        [Invalid] DeployDecoy restricted_zone_b_subnet_server_host_5
+72    ✔        DeployDecoy restricted_zone_b_subnet_user_host_0
+73    ✔        DeployDecoy restricted_zone_b_subnet_user_host_1
+74    ✔        DeployDecoy restricted_zone_b_subnet_user_host_2
+75    ✔        DeployDecoy restricted_zone_b_subnet_user_host_3
+76    ✔        DeployDecoy restricted_zone_b_subnet_user_host_4
+77    ✘        [Invalid] DeployDecoy restricted_zone_b_subnet_user_host_5
+78    ✘        [Invalid] DeployDecoy restricted_zone_b_subnet_user_host_6
+79    ✘        [Invalid] DeployDecoy restricted_zone_b_subnet_user_host_7
+80    ✘        [Invalid] DeployDecoy restricted_zone_b_subnet_user_host_8
+81    ✘        [Invalid] DeployDecoy restricted_zone_b_subnet_user_host_9
+
+==============================================================================================================
+BLUE_AGENT_2 ACTION OBJECTS
+==============================================================================================================
+These are the actual CybORG Action objects that the wrapper creates from each action ID.
+
+  0 -> Analyse restricted_zone_b_subnet_server_host_0
+  1 -> Analyse restricted_zone_b_subnet_server_host_1
+  2 -> Sleep
+  3 -> Sleep
+  4 -> Sleep
+  5 -> Sleep
+  6 -> Analyse restricted_zone_b_subnet_user_host_0
+  7 -> Analyse restricted_zone_b_subnet_user_host_1
+  8 -> Analyse restricted_zone_b_subnet_user_host_2
+  9 -> Analyse restricted_zone_b_subnet_user_host_3
+ 10 -> Analyse restricted_zone_b_subnet_user_host_4
+ 11 -> Sleep
+ 12 -> Sleep
+ 13 -> Sleep
+ 14 -> Sleep
+ 15 -> Sleep
+ 16 -> Monitor
+ 17 -> Remove restricted_zone_b_subnet_server_host_0
+ 18 -> Remove restricted_zone_b_subnet_server_host_1
+ 19 -> Sleep
+ 20 -> Sleep
+ 21 -> Sleep
+ 22 -> Sleep
+ 23 -> Remove restricted_zone_b_subnet_user_host_0
+ 24 -> Remove restricted_zone_b_subnet_user_host_1
+ 25 -> Remove restricted_zone_b_subnet_user_host_2
+ 26 -> Remove restricted_zone_b_subnet_user_host_3
+ 27 -> Remove restricted_zone_b_subnet_user_host_4
+ 28 -> Sleep
+ 29 -> Sleep
+ 30 -> Sleep
+ 31 -> Sleep
+ 32 -> Sleep
+ 33 -> Restore restricted_zone_b_subnet_server_host_0
+ 34 -> Restore restricted_zone_b_subnet_server_host_1
+ 35 -> Sleep
+ 36 -> Sleep
+ 37 -> Sleep
+ 38 -> Sleep
+ 39 -> Restore restricted_zone_b_subnet_user_host_0
+ 40 -> Restore restricted_zone_b_subnet_user_host_1
+ 41 -> Restore restricted_zone_b_subnet_user_host_2
+ 42 -> Restore restricted_zone_b_subnet_user_host_3
+ 43 -> Restore restricted_zone_b_subnet_user_host_4
+ 44 -> Sleep
+ 45 -> Sleep
+ 46 -> Sleep
+ 47 -> Sleep
+ 48 -> Sleep
+ 49 -> Sleep
+ 50 -> AllowTrafficZone
+ 51 -> AllowTrafficZone
+ 52 -> AllowTrafficZone
+ 53 -> AllowTrafficZone
+ 54 -> AllowTrafficZone
+ 55 -> AllowTrafficZone
+ 56 -> AllowTrafficZone
+ 57 -> AllowTrafficZone
+ 58 -> BlockTrafficZone
+ 59 -> BlockTrafficZone
+ 60 -> BlockTrafficZone
+ 61 -> BlockTrafficZone
+ 62 -> BlockTrafficZone
+ 63 -> BlockTrafficZone
+ 64 -> BlockTrafficZone
+ 65 -> BlockTrafficZone
+ 66 -> DeployDecoy restricted_zone_b_subnet_server_host_0
+ 67 -> DeployDecoy restricted_zone_b_subnet_server_host_1
+ 68 -> Sleep
+ 69 -> Sleep
+ 70 -> Sleep
+ 71 -> Sleep
+ 72 -> DeployDecoy restricted_zone_b_subnet_user_host_0
+ 73 -> DeployDecoy restricted_zone_b_subnet_user_host_1
+ 74 -> DeployDecoy restricted_zone_b_subnet_user_host_2
+ 75 -> DeployDecoy restricted_zone_b_subnet_user_host_3
+ 76 -> DeployDecoy restricted_zone_b_subnet_user_host_4
+ 77 -> Sleep
+ 78 -> Sleep
+ 79 -> Sleep
+ 80 -> Sleep
+ 81 -> Sleep
+
+==============================================================================================================
+BLUE_AGENT_3 ACTION SPACE
+==============================================================================================================
+Total Actions : 82
+Valid Actions : 46
+Invalid Actions : 36
+==============================================================================================================
+ID    VALID    ACTION LABEL
+==============================================================================================================
+0     ✔        Analyse operational_zone_b_subnet_server_host_0
+1     ✔        Analyse operational_zone_b_subnet_server_host_1
+2     ✔        Analyse operational_zone_b_subnet_server_host_2
+3     ✘        [Invalid] Analyse operational_zone_b_subnet_server_host_3
+4     ✘        [Invalid] Analyse operational_zone_b_subnet_server_host_4
+5     ✘        [Invalid] Analyse operational_zone_b_subnet_server_host_5
+6     ✔        Analyse operational_zone_b_subnet_user_host_0
+7     ✔        Analyse operational_zone_b_subnet_user_host_1
+8     ✔        Analyse operational_zone_b_subnet_user_host_2
+9     ✔        Analyse operational_zone_b_subnet_user_host_3
+10    ✘        [Invalid] Analyse operational_zone_b_subnet_user_host_4
+11    ✘        [Invalid] Analyse operational_zone_b_subnet_user_host_5
+12    ✘        [Invalid] Analyse operational_zone_b_subnet_user_host_6
+13    ✘        [Invalid] Analyse operational_zone_b_subnet_user_host_7
+14    ✘        [Invalid] Analyse operational_zone_b_subnet_user_host_8
+15    ✘        [Invalid] Analyse operational_zone_b_subnet_user_host_9
+16    ✔        Monitor
+17    ✔        Remove operational_zone_b_subnet_server_host_0
+18    ✔        Remove operational_zone_b_subnet_server_host_1
+19    ✔        Remove operational_zone_b_subnet_server_host_2
+20    ✘        [Invalid] Remove operational_zone_b_subnet_server_host_3
+21    ✘        [Invalid] Remove operational_zone_b_subnet_server_host_4
+22    ✘        [Invalid] Remove operational_zone_b_subnet_server_host_5
+23    ✔        Remove operational_zone_b_subnet_user_host_0
+24    ✔        Remove operational_zone_b_subnet_user_host_1
+25    ✔        Remove operational_zone_b_subnet_user_host_2
+26    ✔        Remove operational_zone_b_subnet_user_host_3
+27    ✘        [Invalid] Remove operational_zone_b_subnet_user_host_4
+28    ✘        [Invalid] Remove operational_zone_b_subnet_user_host_5
+29    ✘        [Invalid] Remove operational_zone_b_subnet_user_host_6
+30    ✘        [Invalid] Remove operational_zone_b_subnet_user_host_7
+31    ✘        [Invalid] Remove operational_zone_b_subnet_user_host_8
+32    ✘        [Invalid] Remove operational_zone_b_subnet_user_host_9
+33    ✔        Restore operational_zone_b_subnet_server_host_0
+34    ✔        Restore operational_zone_b_subnet_server_host_1
+35    ✔        Restore operational_zone_b_subnet_server_host_2
+36    ✘        [Invalid] Restore operational_zone_b_subnet_server_host_3
+37    ✘        [Invalid] Restore operational_zone_b_subnet_server_host_4
+38    ✘        [Invalid] Restore operational_zone_b_subnet_server_host_5
+39    ✔        Restore operational_zone_b_subnet_user_host_0
+40    ✔        Restore operational_zone_b_subnet_user_host_1
+41    ✔        Restore operational_zone_b_subnet_user_host_2
+42    ✔        Restore operational_zone_b_subnet_user_host_3
+43    ✘        [Invalid] Restore operational_zone_b_subnet_user_host_4
+44    ✘        [Invalid] Restore operational_zone_b_subnet_user_host_5
+45    ✘        [Invalid] Restore operational_zone_b_subnet_user_host_6
+46    ✘        [Invalid] Restore operational_zone_b_subnet_user_host_7
+47    ✘        [Invalid] Restore operational_zone_b_subnet_user_host_8
+48    ✘        [Invalid] Restore operational_zone_b_subnet_user_host_9
+49    ✔        Sleep
+50    ✔        AllowTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- admin_network_subnet (10.0.146.0/24)
+51    ✔        AllowTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- contractor_network_subnet (10.0.161.0/24)
+52    ✔        AllowTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- internet_subnet (10.0.252.0/24)
+53    ✔        AllowTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- office_network_subnet (10.0.113.0/24)
+54    ✔        AllowTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- operational_zone_a_subnet (10.0.118.0/24)
+55    ✔        AllowTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- public_access_zone_subnet (10.0.71.0/24)
+56    ✔        AllowTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- restricted_zone_a_subnet (10.0.220.0/24)
+57    ✔        AllowTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- restricted_zone_b_subnet (10.0.32.0/24)
+58    ✔        BlockTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- admin_network_subnet (10.0.146.0/24)
+59    ✔        BlockTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- contractor_network_subnet (10.0.161.0/24)
+60    ✔        BlockTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- internet_subnet (10.0.252.0/24)
+61    ✔        BlockTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- office_network_subnet (10.0.113.0/24)
+62    ✔        BlockTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- operational_zone_a_subnet (10.0.118.0/24)
+63    ✔        BlockTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- public_access_zone_subnet (10.0.71.0/24)
+64    ✔        BlockTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- restricted_zone_a_subnet (10.0.220.0/24)
+65    ✔        BlockTrafficZone operational_zone_b_subnet (10.0.232.0/24) <- restricted_zone_b_subnet (10.0.32.0/24)
+66    ✔        DeployDecoy operational_zone_b_subnet_server_host_0
+67    ✔        DeployDecoy operational_zone_b_subnet_server_host_1
+68    ✔        DeployDecoy operational_zone_b_subnet_server_host_2
+69    ✘        [Invalid] DeployDecoy operational_zone_b_subnet_server_host_3
+70    ✘        [Invalid] DeployDecoy operational_zone_b_subnet_server_host_4
+71    ✘        [Invalid] DeployDecoy operational_zone_b_subnet_server_host_5
+72    ✔        DeployDecoy operational_zone_b_subnet_user_host_0
+73    ✔        DeployDecoy operational_zone_b_subnet_user_host_1
+74    ✔        DeployDecoy operational_zone_b_subnet_user_host_2
+75    ✔        DeployDecoy operational_zone_b_subnet_user_host_3
+76    ✘        [Invalid] DeployDecoy operational_zone_b_subnet_user_host_4
+77    ✘        [Invalid] DeployDecoy operational_zone_b_subnet_user_host_5
+78    ✘        [Invalid] DeployDecoy operational_zone_b_subnet_user_host_6
+79    ✘        [Invalid] DeployDecoy operational_zone_b_subnet_user_host_7
+80    ✘        [Invalid] DeployDecoy operational_zone_b_subnet_user_host_8
+81    ✘        [Invalid] DeployDecoy operational_zone_b_subnet_user_host_9
+
+==============================================================================================================
+BLUE_AGENT_3 ACTION OBJECTS
+==============================================================================================================
+These are the actual CybORG Action objects that the wrapper creates from each action ID.
+
+  0 -> Analyse operational_zone_b_subnet_server_host_0
+  1 -> Analyse operational_zone_b_subnet_server_host_1
+  2 -> Analyse operational_zone_b_subnet_server_host_2
+  3 -> Sleep
+  4 -> Sleep
+  5 -> Sleep
+  6 -> Analyse operational_zone_b_subnet_user_host_0
+  7 -> Analyse operational_zone_b_subnet_user_host_1
+  8 -> Analyse operational_zone_b_subnet_user_host_2
+  9 -> Analyse operational_zone_b_subnet_user_host_3
+ 10 -> Sleep
+ 11 -> Sleep
+ 12 -> Sleep
+ 13 -> Sleep
+ 14 -> Sleep
+ 15 -> Sleep
+ 16 -> Monitor
+ 17 -> Remove operational_zone_b_subnet_server_host_0
+ 18 -> Remove operational_zone_b_subnet_server_host_1
+ 19 -> Remove operational_zone_b_subnet_server_host_2
+ 20 -> Sleep
+ 21 -> Sleep
+ 22 -> Sleep
+ 23 -> Remove operational_zone_b_subnet_user_host_0
+ 24 -> Remove operational_zone_b_subnet_user_host_1
+ 25 -> Remove operational_zone_b_subnet_user_host_2
+ 26 -> Remove operational_zone_b_subnet_user_host_3
+ 27 -> Sleep
+ 28 -> Sleep
+ 29 -> Sleep
+ 30 -> Sleep
+ 31 -> Sleep
+ 32 -> Sleep
+ 33 -> Restore operational_zone_b_subnet_server_host_0
+ 34 -> Restore operational_zone_b_subnet_server_host_1
+ 35 -> Restore operational_zone_b_subnet_server_host_2
+ 36 -> Sleep
+ 37 -> Sleep
+ 38 -> Sleep
+ 39 -> Restore operational_zone_b_subnet_user_host_0
+ 40 -> Restore operational_zone_b_subnet_user_host_1
+ 41 -> Restore operational_zone_b_subnet_user_host_2
+ 42 -> Restore operational_zone_b_subnet_user_host_3
+ 43 -> Sleep
+ 44 -> Sleep
+ 45 -> Sleep
+ 46 -> Sleep
+ 47 -> Sleep
+ 48 -> Sleep
+ 49 -> Sleep
+ 50 -> AllowTrafficZone
+ 51 -> AllowTrafficZone
+ 52 -> AllowTrafficZone
+ 53 -> AllowTrafficZone
+ 54 -> AllowTrafficZone
+ 55 -> AllowTrafficZone
+ 56 -> AllowTrafficZone
+ 57 -> AllowTrafficZone
+ 58 -> BlockTrafficZone
+ 59 -> BlockTrafficZone
+ 60 -> BlockTrafficZone
+ 61 -> BlockTrafficZone
+ 62 -> BlockTrafficZone
+ 63 -> BlockTrafficZone
+ 64 -> BlockTrafficZone
+ 65 -> BlockTrafficZone
+ 66 -> DeployDecoy operational_zone_b_subnet_server_host_0
+ 67 -> DeployDecoy operational_zone_b_subnet_server_host_1
+ 68 -> DeployDecoy operational_zone_b_subnet_server_host_2
+ 69 -> Sleep
+ 70 -> Sleep
+ 71 -> Sleep
+ 72 -> DeployDecoy operational_zone_b_subnet_user_host_0
+ 73 -> DeployDecoy operational_zone_b_subnet_user_host_1
+ 74 -> DeployDecoy operational_zone_b_subnet_user_host_2
+ 75 -> DeployDecoy operational_zone_b_subnet_user_host_3
+ 76 -> Sleep
+ 77 -> Sleep
+ 78 -> Sleep
+ 79 -> Sleep
+ 80 -> Sleep
+ 81 -> Sleep
+
+==============================================================================================================
+BLUE_AGENT_4 ACTION SPACE
+==============================================================================================================
+Total Actions : 242
+Valid Actions : 138
+Invalid Actions : 104
+==============================================================================================================
+ID    VALID    ACTION LABEL
+==============================================================================================================
+0     ✔        Analyse admin_network_subnet_server_host_0
+1     ✔        Analyse admin_network_subnet_server_host_1
+2     ✔        Analyse admin_network_subnet_server_host_2
+3     ✘        [Invalid] Analyse admin_network_subnet_server_host_3
+4     ✘        [Invalid] Analyse admin_network_subnet_server_host_4
+5     ✘        [Invalid] Analyse admin_network_subnet_server_host_5
+6     ✔        Analyse admin_network_subnet_user_host_0
+7     ✔        Analyse admin_network_subnet_user_host_1
+8     ✔        Analyse admin_network_subnet_user_host_2
+9     ✔        Analyse admin_network_subnet_user_host_3
+10    ✔        Analyse admin_network_subnet_user_host_4
+11    ✔        Analyse admin_network_subnet_user_host_5
+12    ✔        Analyse admin_network_subnet_user_host_6
+13    ✘        [Invalid] Analyse admin_network_subnet_user_host_7
+14    ✘        [Invalid] Analyse admin_network_subnet_user_host_8
+15    ✘        [Invalid] Analyse admin_network_subnet_user_host_9
+16    ✔        Analyse office_network_subnet_server_host_0
+17    ✔        Analyse office_network_subnet_server_host_1
+18    ✘        [Invalid] Analyse office_network_subnet_server_host_2
+19    ✘        [Invalid] Analyse office_network_subnet_server_host_3
+20    ✘        [Invalid] Analyse office_network_subnet_server_host_4
+21    ✘        [Invalid] Analyse office_network_subnet_server_host_5
+22    ✔        Analyse office_network_subnet_user_host_0
+23    ✔        Analyse office_network_subnet_user_host_1
+24    ✔        Analyse office_network_subnet_user_host_2
+25    ✔        Analyse office_network_subnet_user_host_3
+26    ✔        Analyse office_network_subnet_user_host_4
+27    ✔        Analyse office_network_subnet_user_host_5
+28    ✘        [Invalid] Analyse office_network_subnet_user_host_6
+29    ✘        [Invalid] Analyse office_network_subnet_user_host_7
+30    ✘        [Invalid] Analyse office_network_subnet_user_host_8
+31    ✘        [Invalid] Analyse office_network_subnet_user_host_9
+32    ✔        Analyse public_access_zone_subnet_server_host_0
+33    ✘        [Invalid] Analyse public_access_zone_subnet_server_host_1
+34    ✘        [Invalid] Analyse public_access_zone_subnet_server_host_2
+35    ✘        [Invalid] Analyse public_access_zone_subnet_server_host_3
+36    ✘        [Invalid] Analyse public_access_zone_subnet_server_host_4
+37    ✘        [Invalid] Analyse public_access_zone_subnet_server_host_5
+38    ✔        Analyse public_access_zone_subnet_user_host_0
+39    ✔        Analyse public_access_zone_subnet_user_host_1
+40    ✔        Analyse public_access_zone_subnet_user_host_2
+41    ✘        [Invalid] Analyse public_access_zone_subnet_user_host_3
+42    ✘        [Invalid] Analyse public_access_zone_subnet_user_host_4
+43    ✘        [Invalid] Analyse public_access_zone_subnet_user_host_5
+44    ✘        [Invalid] Analyse public_access_zone_subnet_user_host_6
+45    ✘        [Invalid] Analyse public_access_zone_subnet_user_host_7
+46    ✘        [Invalid] Analyse public_access_zone_subnet_user_host_8
+47    ✘        [Invalid] Analyse public_access_zone_subnet_user_host_9
+48    ✔        Monitor
+49    ✔        Remove admin_network_subnet_server_host_0
+50    ✔        Remove admin_network_subnet_server_host_1
+51    ✔        Remove admin_network_subnet_server_host_2
+52    ✘        [Invalid] Remove admin_network_subnet_server_host_3
+53    ✘        [Invalid] Remove admin_network_subnet_server_host_4
+54    ✘        [Invalid] Remove admin_network_subnet_server_host_5
+55    ✔        Remove admin_network_subnet_user_host_0
+56    ✔        Remove admin_network_subnet_user_host_1
+57    ✔        Remove admin_network_subnet_user_host_2
+58    ✔        Remove admin_network_subnet_user_host_3
+59    ✔        Remove admin_network_subnet_user_host_4
+60    ✔        Remove admin_network_subnet_user_host_5
+61    ✔        Remove admin_network_subnet_user_host_6
+62    ✘        [Invalid] Remove admin_network_subnet_user_host_7
+63    ✘        [Invalid] Remove admin_network_subnet_user_host_8
+64    ✘        [Invalid] Remove admin_network_subnet_user_host_9
+65    ✔        Remove office_network_subnet_server_host_0
+66    ✔        Remove office_network_subnet_server_host_1
+67    ✘        [Invalid] Remove office_network_subnet_server_host_2
+68    ✘        [Invalid] Remove office_network_subnet_server_host_3
+69    ✘        [Invalid] Remove office_network_subnet_server_host_4
+70    ✘        [Invalid] Remove office_network_subnet_server_host_5
+71    ✔        Remove office_network_subnet_user_host_0
+72    ✔        Remove office_network_subnet_user_host_1
+73    ✔        Remove office_network_subnet_user_host_2
+74    ✔        Remove office_network_subnet_user_host_3
+75    ✔        Remove office_network_subnet_user_host_4
+76    ✔        Remove office_network_subnet_user_host_5
+77    ✘        [Invalid] Remove office_network_subnet_user_host_6
+78    ✘        [Invalid] Remove office_network_subnet_user_host_7
+79    ✘        [Invalid] Remove office_network_subnet_user_host_8
+80    ✘        [Invalid] Remove office_network_subnet_user_host_9
+81    ✔        Remove public_access_zone_subnet_server_host_0
+82    ✘        [Invalid] Remove public_access_zone_subnet_server_host_1
+83    ✘        [Invalid] Remove public_access_zone_subnet_server_host_2
+84    ✘        [Invalid] Remove public_access_zone_subnet_server_host_3
+85    ✘        [Invalid] Remove public_access_zone_subnet_server_host_4
+86    ✘        [Invalid] Remove public_access_zone_subnet_server_host_5
+87    ✔        Remove public_access_zone_subnet_user_host_0
+88    ✔        Remove public_access_zone_subnet_user_host_1
+89    ✔        Remove public_access_zone_subnet_user_host_2
+90    ✘        [Invalid] Remove public_access_zone_subnet_user_host_3
+91    ✘        [Invalid] Remove public_access_zone_subnet_user_host_4
+92    ✘        [Invalid] Remove public_access_zone_subnet_user_host_5
+93    ✘        [Invalid] Remove public_access_zone_subnet_user_host_6
+94    ✘        [Invalid] Remove public_access_zone_subnet_user_host_7
+95    ✘        [Invalid] Remove public_access_zone_subnet_user_host_8
+96    ✘        [Invalid] Remove public_access_zone_subnet_user_host_9
+97    ✔        Restore admin_network_subnet_server_host_0
+98    ✔        Restore admin_network_subnet_server_host_1
+99    ✔        Restore admin_network_subnet_server_host_2
+100   ✘        [Invalid] Restore admin_network_subnet_server_host_3
+101   ✘        [Invalid] Restore admin_network_subnet_server_host_4
+102   ✘        [Invalid] Restore admin_network_subnet_server_host_5
+103   ✔        Restore admin_network_subnet_user_host_0
+104   ✔        Restore admin_network_subnet_user_host_1
+105   ✔        Restore admin_network_subnet_user_host_2
+106   ✔        Restore admin_network_subnet_user_host_3
+107   ✔        Restore admin_network_subnet_user_host_4
+108   ✔        Restore admin_network_subnet_user_host_5
+109   ✔        Restore admin_network_subnet_user_host_6
+110   ✘        [Invalid] Restore admin_network_subnet_user_host_7
+111   ✘        [Invalid] Restore admin_network_subnet_user_host_8
+112   ✘        [Invalid] Restore admin_network_subnet_user_host_9
+113   ✔        Restore office_network_subnet_server_host_0
+114   ✔        Restore office_network_subnet_server_host_1
+115   ✘        [Invalid] Restore office_network_subnet_server_host_2
+116   ✘        [Invalid] Restore office_network_subnet_server_host_3
+117   ✘        [Invalid] Restore office_network_subnet_server_host_4
+118   ✘        [Invalid] Restore office_network_subnet_server_host_5
+119   ✔        Restore office_network_subnet_user_host_0
+120   ✔        Restore office_network_subnet_user_host_1
+121   ✔        Restore office_network_subnet_user_host_2
+122   ✔        Restore office_network_subnet_user_host_3
+123   ✔        Restore office_network_subnet_user_host_4
+124   ✔        Restore office_network_subnet_user_host_5
+125   ✘        [Invalid] Restore office_network_subnet_user_host_6
+126   ✘        [Invalid] Restore office_network_subnet_user_host_7
+127   ✘        [Invalid] Restore office_network_subnet_user_host_8
+128   ✘        [Invalid] Restore office_network_subnet_user_host_9
+129   ✔        Restore public_access_zone_subnet_server_host_0
+130   ✘        [Invalid] Restore public_access_zone_subnet_server_host_1
+131   ✘        [Invalid] Restore public_access_zone_subnet_server_host_2
+132   ✘        [Invalid] Restore public_access_zone_subnet_server_host_3
+133   ✘        [Invalid] Restore public_access_zone_subnet_server_host_4
+134   ✘        [Invalid] Restore public_access_zone_subnet_server_host_5
+135   ✔        Restore public_access_zone_subnet_user_host_0
+136   ✔        Restore public_access_zone_subnet_user_host_1
+137   ✔        Restore public_access_zone_subnet_user_host_2
+138   ✘        [Invalid] Restore public_access_zone_subnet_user_host_3
+139   ✘        [Invalid] Restore public_access_zone_subnet_user_host_4
+140   ✘        [Invalid] Restore public_access_zone_subnet_user_host_5
+141   ✘        [Invalid] Restore public_access_zone_subnet_user_host_6
+142   ✘        [Invalid] Restore public_access_zone_subnet_user_host_7
+143   ✘        [Invalid] Restore public_access_zone_subnet_user_host_8
+144   ✘        [Invalid] Restore public_access_zone_subnet_user_host_9
+145   ✔        Sleep
+146   ✔        AllowTrafficZone admin_network_subnet (10.0.146.0/24) <- contractor_network_subnet (10.0.161.0/24)
+147   ✔        AllowTrafficZone admin_network_subnet (10.0.146.0/24) <- internet_subnet (10.0.252.0/24)
+148   ✔        AllowTrafficZone admin_network_subnet (10.0.146.0/24) <- office_network_subnet (10.0.113.0/24)
+149   ✔        AllowTrafficZone admin_network_subnet (10.0.146.0/24) <- operational_zone_a_subnet (10.0.118.0/24)
+150   ✔        AllowTrafficZone admin_network_subnet (10.0.146.0/24) <- operational_zone_b_subnet (10.0.232.0/24)
+151   ✔        AllowTrafficZone admin_network_subnet (10.0.146.0/24) <- public_access_zone_subnet (10.0.71.0/24)
+152   ✔        AllowTrafficZone admin_network_subnet (10.0.146.0/24) <- restricted_zone_a_subnet (10.0.220.0/24)
+153   ✔        AllowTrafficZone admin_network_subnet (10.0.146.0/24) <- restricted_zone_b_subnet (10.0.32.0/24)
+154   ✔        AllowTrafficZone office_network_subnet (10.0.113.0/24) <- admin_network_subnet (10.0.146.0/24)
+155   ✔        AllowTrafficZone office_network_subnet (10.0.113.0/24) <- contractor_network_subnet (10.0.161.0/24)
+156   ✔        AllowTrafficZone office_network_subnet (10.0.113.0/24) <- internet_subnet (10.0.252.0/24)
+157   ✔        AllowTrafficZone office_network_subnet (10.0.113.0/24) <- operational_zone_a_subnet (10.0.118.0/24)
+158   ✔        AllowTrafficZone office_network_subnet (10.0.113.0/24) <- operational_zone_b_subnet (10.0.232.0/24)
+159   ✔        AllowTrafficZone office_network_subnet (10.0.113.0/24) <- public_access_zone_subnet (10.0.71.0/24)
+160   ✔        AllowTrafficZone office_network_subnet (10.0.113.0/24) <- restricted_zone_a_subnet (10.0.220.0/24)
+161   ✔        AllowTrafficZone office_network_subnet (10.0.113.0/24) <- restricted_zone_b_subnet (10.0.32.0/24)
+162   ✔        AllowTrafficZone public_access_zone_subnet (10.0.71.0/24) <- admin_network_subnet (10.0.146.0/24)
+163   ✔        AllowTrafficZone public_access_zone_subnet (10.0.71.0/24) <- contractor_network_subnet (10.0.161.0/24)
+164   ✔        AllowTrafficZone public_access_zone_subnet (10.0.71.0/24) <- internet_subnet (10.0.252.0/24)
+165   ✔        AllowTrafficZone public_access_zone_subnet (10.0.71.0/24) <- office_network_subnet (10.0.113.0/24)
+166   ✔        AllowTrafficZone public_access_zone_subnet (10.0.71.0/24) <- operational_zone_a_subnet (10.0.118.0/24)
+167   ✔        AllowTrafficZone public_access_zone_subnet (10.0.71.0/24) <- operational_zone_b_subnet (10.0.232.0/24)
+168   ✔        AllowTrafficZone public_access_zone_subnet (10.0.71.0/24) <- restricted_zone_a_subnet (10.0.220.0/24)
+169   ✔        AllowTrafficZone public_access_zone_subnet (10.0.71.0/24) <- restricted_zone_b_subnet (10.0.32.0/24)
+170   ✔        BlockTrafficZone admin_network_subnet (10.0.146.0/24) <- contractor_network_subnet (10.0.161.0/24)
+171   ✔        BlockTrafficZone admin_network_subnet (10.0.146.0/24) <- internet_subnet (10.0.252.0/24)
+172   ✔        BlockTrafficZone admin_network_subnet (10.0.146.0/24) <- office_network_subnet (10.0.113.0/24)
+173   ✔        BlockTrafficZone admin_network_subnet (10.0.146.0/24) <- operational_zone_a_subnet (10.0.118.0/24)
+174   ✔        BlockTrafficZone admin_network_subnet (10.0.146.0/24) <- operational_zone_b_subnet (10.0.232.0/24)
+175   ✔        BlockTrafficZone admin_network_subnet (10.0.146.0/24) <- public_access_zone_subnet (10.0.71.0/24)
+176   ✔        BlockTrafficZone admin_network_subnet (10.0.146.0/24) <- restricted_zone_a_subnet (10.0.220.0/24)
+177   ✔        BlockTrafficZone admin_network_subnet (10.0.146.0/24) <- restricted_zone_b_subnet (10.0.32.0/24)
+178   ✔        BlockTrafficZone office_network_subnet (10.0.113.0/24) <- admin_network_subnet (10.0.146.0/24)
+179   ✔        BlockTrafficZone office_network_subnet (10.0.113.0/24) <- contractor_network_subnet (10.0.161.0/24)
+180   ✔        BlockTrafficZone office_network_subnet (10.0.113.0/24) <- internet_subnet (10.0.252.0/24)
+181   ✔        BlockTrafficZone office_network_subnet (10.0.113.0/24) <- operational_zone_a_subnet (10.0.118.0/24)
+182   ✔        BlockTrafficZone office_network_subnet (10.0.113.0/24) <- operational_zone_b_subnet (10.0.232.0/24)
+183   ✔        BlockTrafficZone office_network_subnet (10.0.113.0/24) <- public_access_zone_subnet (10.0.71.0/24)
+184   ✔        BlockTrafficZone office_network_subnet (10.0.113.0/24) <- restricted_zone_a_subnet (10.0.220.0/24)
+185   ✔        BlockTrafficZone office_network_subnet (10.0.113.0/24) <- restricted_zone_b_subnet (10.0.32.0/24)
+186   ✔        BlockTrafficZone public_access_zone_subnet (10.0.71.0/24) <- admin_network_subnet (10.0.146.0/24)
+187   ✔        BlockTrafficZone public_access_zone_subnet (10.0.71.0/24) <- contractor_network_subnet (10.0.161.0/24)
+188   ✔        BlockTrafficZone public_access_zone_subnet (10.0.71.0/24) <- internet_subnet (10.0.252.0/24)
+189   ✔        BlockTrafficZone public_access_zone_subnet (10.0.71.0/24) <- office_network_subnet (10.0.113.0/24)
+190   ✔        BlockTrafficZone public_access_zone_subnet (10.0.71.0/24) <- operational_zone_a_subnet (10.0.118.0/24)
+191   ✔        BlockTrafficZone public_access_zone_subnet (10.0.71.0/24) <- operational_zone_b_subnet (10.0.232.0/24)
+192   ✔        BlockTrafficZone public_access_zone_subnet (10.0.71.0/24) <- restricted_zone_a_subnet (10.0.220.0/24)
+193   ✔        BlockTrafficZone public_access_zone_subnet (10.0.71.0/24) <- restricted_zone_b_subnet (10.0.32.0/24)
+194   ✔        DeployDecoy admin_network_subnet_server_host_0
+195   ✔        DeployDecoy admin_network_subnet_server_host_1
+196   ✔        DeployDecoy admin_network_subnet_server_host_2
+197   ✘        [Invalid] DeployDecoy admin_network_subnet_server_host_3
+198   ✘        [Invalid] DeployDecoy admin_network_subnet_server_host_4
+199   ✘        [Invalid] DeployDecoy admin_network_subnet_server_host_5
+200   ✔        DeployDecoy admin_network_subnet_user_host_0
+201   ✔        DeployDecoy admin_network_subnet_user_host_1
+202   ✔        DeployDecoy admin_network_subnet_user_host_2
+203   ✔        DeployDecoy admin_network_subnet_user_host_3
+204   ✔        DeployDecoy admin_network_subnet_user_host_4
+205   ✔        DeployDecoy admin_network_subnet_user_host_5
+206   ✔        DeployDecoy admin_network_subnet_user_host_6
+207   ✘        [Invalid] DeployDecoy admin_network_subnet_user_host_7
+208   ✘        [Invalid] DeployDecoy admin_network_subnet_user_host_8
+209   ✘        [Invalid] DeployDecoy admin_network_subnet_user_host_9
+210   ✔        DeployDecoy office_network_subnet_server_host_0
+211   ✔        DeployDecoy office_network_subnet_server_host_1
+212   ✘        [Invalid] DeployDecoy office_network_subnet_server_host_2
+213   ✘        [Invalid] DeployDecoy office_network_subnet_server_host_3
+214   ✘        [Invalid] DeployDecoy office_network_subnet_server_host_4
+215   ✘        [Invalid] DeployDecoy office_network_subnet_server_host_5
+216   ✔        DeployDecoy office_network_subnet_user_host_0
+217   ✔        DeployDecoy office_network_subnet_user_host_1
+218   ✔        DeployDecoy office_network_subnet_user_host_2
+219   ✔        DeployDecoy office_network_subnet_user_host_3
+220   ✔        DeployDecoy office_network_subnet_user_host_4
+221   ✔        DeployDecoy office_network_subnet_user_host_5
+222   ✘        [Invalid] DeployDecoy office_network_subnet_user_host_6
+223   ✘        [Invalid] DeployDecoy office_network_subnet_user_host_7
+224   ✘        [Invalid] DeployDecoy office_network_subnet_user_host_8
+225   ✘        [Invalid] DeployDecoy office_network_subnet_user_host_9
+226   ✔        DeployDecoy public_access_zone_subnet_server_host_0
+227   ✘        [Invalid] DeployDecoy public_access_zone_subnet_server_host_1
+228   ✘        [Invalid] DeployDecoy public_access_zone_subnet_server_host_2
+229   ✘        [Invalid] DeployDecoy public_access_zone_subnet_server_host_3
+230   ✘        [Invalid] DeployDecoy public_access_zone_subnet_server_host_4
+231   ✘        [Invalid] DeployDecoy public_access_zone_subnet_server_host_5
+232   ✔        DeployDecoy public_access_zone_subnet_user_host_0
+233   ✔        DeployDecoy public_access_zone_subnet_user_host_1
+234   ✔        DeployDecoy public_access_zone_subnet_user_host_2
+235   ✘        [Invalid] DeployDecoy public_access_zone_subnet_user_host_3
+236   ✘        [Invalid] DeployDecoy public_access_zone_subnet_user_host_4
+237   ✘        [Invalid] DeployDecoy public_access_zone_subnet_user_host_5
+238   ✘        [Invalid] DeployDecoy public_access_zone_subnet_user_host_6
+239   ✘        [Invalid] DeployDecoy public_access_zone_subnet_user_host_7
+240   ✘        [Invalid] DeployDecoy public_access_zone_subnet_user_host_8
+241   ✘        [Invalid] DeployDecoy public_access_zone_subnet_user_host_9
+
+==============================================================================================================
+BLUE_AGENT_4 ACTION OBJECTS
+==============================================================================================================
+These are the actual CybORG Action objects that the wrapper creates from each action ID.
+
+  0 -> Analyse admin_network_subnet_server_host_0
+  1 -> Analyse admin_network_subnet_server_host_1
+  2 -> Analyse admin_network_subnet_server_host_2
+  3 -> Sleep
+  4 -> Sleep
+  5 -> Sleep
+  6 -> Analyse admin_network_subnet_user_host_0
+  7 -> Analyse admin_network_subnet_user_host_1
+  8 -> Analyse admin_network_subnet_user_host_2
+  9 -> Analyse admin_network_subnet_user_host_3
+ 10 -> Analyse admin_network_subnet_user_host_4
+ 11 -> Analyse admin_network_subnet_user_host_5
+ 12 -> Analyse admin_network_subnet_user_host_6
+ 13 -> Sleep
+ 14 -> Sleep
+ 15 -> Sleep
+ 16 -> Analyse office_network_subnet_server_host_0
+ 17 -> Analyse office_network_subnet_server_host_1
+ 18 -> Sleep
+ 19 -> Sleep
+ 20 -> Sleep
+ 21 -> Sleep
+ 22 -> Analyse office_network_subnet_user_host_0
+ 23 -> Analyse office_network_subnet_user_host_1
+ 24 -> Analyse office_network_subnet_user_host_2
+ 25 -> Analyse office_network_subnet_user_host_3
+ 26 -> Analyse office_network_subnet_user_host_4
+ 27 -> Analyse office_network_subnet_user_host_5
+ 28 -> Sleep
+ 29 -> Sleep
+ 30 -> Sleep
+ 31 -> Sleep
+ 32 -> Analyse public_access_zone_subnet_server_host_0
+ 33 -> Sleep
+ 34 -> Sleep
+ 35 -> Sleep
+ 36 -> Sleep
+ 37 -> Sleep
+ 38 -> Analyse public_access_zone_subnet_user_host_0
+ 39 -> Analyse public_access_zone_subnet_user_host_1
+ 40 -> Analyse public_access_zone_subnet_user_host_2
+ 41 -> Sleep
+ 42 -> Sleep
+ 43 -> Sleep
+ 44 -> Sleep
+ 45 -> Sleep
+ 46 -> Sleep
+ 47 -> Sleep
+ 48 -> Monitor
+ 49 -> Remove admin_network_subnet_server_host_0
+ 50 -> Remove admin_network_subnet_server_host_1
+ 51 -> Remove admin_network_subnet_server_host_2
+ 52 -> Sleep
+ 53 -> Sleep
+ 54 -> Sleep
+ 55 -> Remove admin_network_subnet_user_host_0
+ 56 -> Remove admin_network_subnet_user_host_1
+ 57 -> Remove admin_network_subnet_user_host_2
+ 58 -> Remove admin_network_subnet_user_host_3
+ 59 -> Remove admin_network_subnet_user_host_4
+ 60 -> Remove admin_network_subnet_user_host_5
+ 61 -> Remove admin_network_subnet_user_host_6
+ 62 -> Sleep
+ 63 -> Sleep
+ 64 -> Sleep
+ 65 -> Remove office_network_subnet_server_host_0
+ 66 -> Remove office_network_subnet_server_host_1
+ 67 -> Sleep
+ 68 -> Sleep
+ 69 -> Sleep
+ 70 -> Sleep
+ 71 -> Remove office_network_subnet_user_host_0
+ 72 -> Remove office_network_subnet_user_host_1
+ 73 -> Remove office_network_subnet_user_host_2
+ 74 -> Remove office_network_subnet_user_host_3
+ 75 -> Remove office_network_subnet_user_host_4
+ 76 -> Remove office_network_subnet_user_host_5
+ 77 -> Sleep
+ 78 -> Sleep
+ 79 -> Sleep
+ 80 -> Sleep
+ 81 -> Remove public_access_zone_subnet_server_host_0
+ 82 -> Sleep
+ 83 -> Sleep
+ 84 -> Sleep
+ 85 -> Sleep
+ 86 -> Sleep
+ 87 -> Remove public_access_zone_subnet_user_host_0
+ 88 -> Remove public_access_zone_subnet_user_host_1
+ 89 -> Remove public_access_zone_subnet_user_host_2
+ 90 -> Sleep
+ 91 -> Sleep
+ 92 -> Sleep
+ 93 -> Sleep
+ 94 -> Sleep
+ 95 -> Sleep
+ 96 -> Sleep
+ 97 -> Restore admin_network_subnet_server_host_0
+ 98 -> Restore admin_network_subnet_server_host_1
+ 99 -> Restore admin_network_subnet_server_host_2
+100 -> Sleep
+101 -> Sleep
+102 -> Sleep
+103 -> Restore admin_network_subnet_user_host_0
+104 -> Restore admin_network_subnet_user_host_1
+105 -> Restore admin_network_subnet_user_host_2
+106 -> Restore admin_network_subnet_user_host_3
+107 -> Restore admin_network_subnet_user_host_4
+108 -> Restore admin_network_subnet_user_host_5
+109 -> Restore admin_network_subnet_user_host_6
+110 -> Sleep
+111 -> Sleep
+112 -> Sleep
+113 -> Restore office_network_subnet_server_host_0
+114 -> Restore office_network_subnet_server_host_1
+115 -> Sleep
+116 -> Sleep
+117 -> Sleep
+118 -> Sleep
+119 -> Restore office_network_subnet_user_host_0
+120 -> Restore office_network_subnet_user_host_1
+121 -> Restore office_network_subnet_user_host_2
+122 -> Restore office_network_subnet_user_host_3
+123 -> Restore office_network_subnet_user_host_4
+124 -> Restore office_network_subnet_user_host_5
+125 -> Sleep
+126 -> Sleep
+127 -> Sleep
+128 -> Sleep
+129 -> Restore public_access_zone_subnet_server_host_0
+130 -> Sleep
+131 -> Sleep
+132 -> Sleep
+133 -> Sleep
+134 -> Sleep
+135 -> Restore public_access_zone_subnet_user_host_0
+136 -> Restore public_access_zone_subnet_user_host_1
+137 -> Restore public_access_zone_subnet_user_host_2
+138 -> Sleep
+139 -> Sleep
+140 -> Sleep
+141 -> Sleep
+142 -> Sleep
+143 -> Sleep
+144 -> Sleep
+145 -> Sleep
+146 -> AllowTrafficZone
+147 -> AllowTrafficZone
+148 -> AllowTrafficZone
+149 -> AllowTrafficZone
+150 -> AllowTrafficZone
+151 -> AllowTrafficZone
+152 -> AllowTrafficZone
+153 -> AllowTrafficZone
+154 -> AllowTrafficZone
+155 -> AllowTrafficZone
+156 -> AllowTrafficZone
+157 -> AllowTrafficZone
+158 -> AllowTrafficZone
+159 -> AllowTrafficZone
+160 -> AllowTrafficZone
+161 -> AllowTrafficZone
+162 -> AllowTrafficZone
+163 -> AllowTrafficZone
+164 -> AllowTrafficZone
+165 -> AllowTrafficZone
+166 -> AllowTrafficZone
+167 -> AllowTrafficZone
+168 -> AllowTrafficZone
+169 -> AllowTrafficZone
+170 -> BlockTrafficZone
+171 -> BlockTrafficZone
+172 -> BlockTrafficZone
+173 -> BlockTrafficZone
+174 -> BlockTrafficZone
+175 -> BlockTrafficZone
+176 -> BlockTrafficZone
+177 -> BlockTrafficZone
+178 -> BlockTrafficZone
+179 -> BlockTrafficZone
+180 -> BlockTrafficZone
+181 -> BlockTrafficZone
+182 -> BlockTrafficZone
+183 -> BlockTrafficZone
+184 -> BlockTrafficZone
+185 -> BlockTrafficZone
+186 -> BlockTrafficZone
+187 -> BlockTrafficZone
+188 -> BlockTrafficZone
+189 -> BlockTrafficZone
+190 -> BlockTrafficZone
+191 -> BlockTrafficZone
+192 -> BlockTrafficZone
+193 -> BlockTrafficZone
+194 -> DeployDecoy admin_network_subnet_server_host_0
+195 -> DeployDecoy admin_network_subnet_server_host_1
+196 -> DeployDecoy admin_network_subnet_server_host_2
+197 -> Sleep
+198 -> Sleep
+199 -> Sleep
+200 -> DeployDecoy admin_network_subnet_user_host_0
+201 -> DeployDecoy admin_network_subnet_user_host_1
+202 -> DeployDecoy admin_network_subnet_user_host_2
+203 -> DeployDecoy admin_network_subnet_user_host_3
+204 -> DeployDecoy admin_network_subnet_user_host_4
+205 -> DeployDecoy admin_network_subnet_user_host_5
+206 -> DeployDecoy admin_network_subnet_user_host_6
+207 -> Sleep
+208 -> Sleep
+209 -> Sleep
+210 -> DeployDecoy office_network_subnet_server_host_0
+211 -> DeployDecoy office_network_subnet_server_host_1
+212 -> Sleep
+213 -> Sleep
+214 -> Sleep
+215 -> Sleep
+216 -> DeployDecoy office_network_subnet_user_host_0
+217 -> DeployDecoy office_network_subnet_user_host_1
+218 -> DeployDecoy office_network_subnet_user_host_2
+219 -> DeployDecoy office_network_subnet_user_host_3
+220 -> DeployDecoy office_network_subnet_user_host_4
+221 -> DeployDecoy office_network_subnet_user_host_5
+222 -> Sleep
+223 -> Sleep
+224 -> Sleep
+225 -> Sleep
+226 -> DeployDecoy public_access_zone_subnet_server_host_0
+227 -> Sleep
+228 -> Sleep
+229 -> Sleep
+230 -> Sleep
+231 -> Sleep
+232 -> DeployDecoy public_access_zone_subnet_user_host_0
+233 -> DeployDecoy public_access_zone_subnet_user_host_1
+234 -> DeployDecoy public_access_zone_subnet_user_host_2
+235 -> Sleep
+236 -> Sleep
+237 -> Sleep
+238 -> Sleep
+239 -> Sleep
+240 -> Sleep
+241 -> Sleep
+
+==============================================================================================================
+SUMMARY
+==============================================================================================================
+blue_agent_0     Total:  82   Valid:  50   Invalid:  32
+blue_agent_1     Total:  82   Valid:  58   Invalid:  24
+blue_agent_2     Total:  82   Valid:  46   Invalid:  36
+blue_agent_3     Total:  82   Valid:  46   Invalid:  36
+blue_agent_4     Total: 242   Valid: 138   Invalid: 104
+==============================================================================================================
+==============================================================================================================

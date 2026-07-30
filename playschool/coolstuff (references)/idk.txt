@@ -1,0 +1,17 @@
+                Simulator (Ground Truth)
+                        │
+                        ▼
+            Raw Observation (VERY RICH)
+                        │
+      (~5000+ pieces of information)
+                        │
+                        ▼
+             BlueFlatWrapper Encoder
+                        │
+                        ▼
+              92 / 210 feature vector
+                        │
+                        ▼
+               PPO / MAPPO Neural Network
+
+

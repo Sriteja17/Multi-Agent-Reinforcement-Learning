@@ -1,0 +1,50 @@
+INTERNET
+
+CONTRACTOR_NETWORK
+PUBLIC_ACCESS_ZONE
+ADMIN_NETWORK
+OFFICE_NETWORK
+
+RESTRICTED_ZONE_A
+OPERATIONAL_ZONE_A
+
+RESTRICTED_ZONE_B
+OPERATIONAL_ZONE_B
+
+
+| Blue Agent   | Protected Subnet(s)            |
+| ------------ | ------------------------------ |
+| blue_agent_0 | Restricted Zone A              |
+| blue_agent_1 | Operational Zone A             |
+| blue_agent_2 | Restricted Zone B              |
+| blue_agent_3 | Operational Zone B             |
+| blue_agent_4 | Public Access + Admin + Office |
+
+
+// 6 red agents are present but only 1 is activated at start.So the attack always begins in the Contractor Network, while the other red agents exist but remain inactive until later.
+//CC4 creates one green agent for every user host.
+
+total 91 hosts
+(91 separate machines)
+Each one can:-
+become infected
+get scanned
+be restored
+host malware
+run processes
+
+blue agent observes every host. Hence the size of the observation vector of each blue agent = number of hosts in its zone (91)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

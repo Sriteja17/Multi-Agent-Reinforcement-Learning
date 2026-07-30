@@ -1,0 +1,249 @@
+================================================================================
+BLUE AGENTS
+================================================================================
+Total Blue Agents : 5
+
+Agent 0
+Name : blue_agent_0
+
+Agent 1
+Name : blue_agent_1
+
+Agent 2
+Name : blue_agent_2
+
+Agent 3
+Name : blue_agent_3
+
+Agent 4
+Name : blue_agent_4
+
+================================================================================
+DETAILED AGENT INFORMATION
+================================================================================
+================================================================================
+BLUE_AGENT_0
+================================================================================
+
+Protected Subnets
+
+  • restricted_zone_a_subnet
+
+Protected Hosts
+
+  • restricted_zone_a_subnet_router
+  • restricted_zone_a_subnet_server_host_0
+  • restricted_zone_a_subnet_server_host_1
+  • restricted_zone_a_subnet_server_host_2
+  • restricted_zone_a_subnet_server_host_3
+  • restricted_zone_a_subnet_server_host_4
+  • restricted_zone_a_subnet_server_host_5
+  • restricted_zone_a_subnet_user_host_0
+  • restricted_zone_a_subnet_user_host_1
+  • restricted_zone_a_subnet_user_host_2
+  • restricted_zone_a_subnet_user_host_3
+  • restricted_zone_a_subnet_user_host_4
+  • restricted_zone_a_subnet_user_host_5
+  • restricted_zone_a_subnet_user_host_6
+  • restricted_zone_a_subnet_user_host_7
+  • restricted_zone_a_subnet_user_host_8
+  • restricted_zone_a_subnet_user_host_9
+
+Observation
+Shape      : (92,)
+Dimensions : 92
+
+Action Space
+Discrete(82)
+Total Actions : 82
+================================================================================
+BLUE_AGENT_1
+================================================================================
+
+Protected Subnets
+
+  • operational_zone_a_subnet
+
+Protected Hosts
+
+  • operational_zone_a_subnet_router
+  • operational_zone_a_subnet_server_host_0
+  • operational_zone_a_subnet_server_host_1
+  • operational_zone_a_subnet_server_host_2
+  • operational_zone_a_subnet_server_host_3
+  • operational_zone_a_subnet_server_host_4
+  • operational_zone_a_subnet_server_host_5
+  • operational_zone_a_subnet_user_host_0
+  • operational_zone_a_subnet_user_host_1
+  • operational_zone_a_subnet_user_host_2
+  • operational_zone_a_subnet_user_host_3
+  • operational_zone_a_subnet_user_host_4
+  • operational_zone_a_subnet_user_host_5
+  • operational_zone_a_subnet_user_host_6
+  • operational_zone_a_subnet_user_host_7
+  • operational_zone_a_subnet_user_host_8
+  • operational_zone_a_subnet_user_host_9
+
+Observation
+Shape      : (92,)
+Dimensions : 92
+
+Action Space
+Discrete(82)
+Total Actions : 82
+================================================================================
+BLUE_AGENT_2
+================================================================================
+
+Protected Subnets
+
+  • restricted_zone_b_subnet
+
+Protected Hosts
+
+  • restricted_zone_b_subnet_router
+  • restricted_zone_b_subnet_server_host_0
+  • restricted_zone_b_subnet_server_host_1
+  • restricted_zone_b_subnet_server_host_2
+  • restricted_zone_b_subnet_server_host_3
+  • restricted_zone_b_subnet_server_host_4
+  • restricted_zone_b_subnet_server_host_5
+  • restricted_zone_b_subnet_user_host_0
+  • restricted_zone_b_subnet_user_host_1
+  • restricted_zone_b_subnet_user_host_2
+  • restricted_zone_b_subnet_user_host_3
+  • restricted_zone_b_subnet_user_host_4
+  • restricted_zone_b_subnet_user_host_5
+  • restricted_zone_b_subnet_user_host_6
+  • restricted_zone_b_subnet_user_host_7
+  • restricted_zone_b_subnet_user_host_8
+  • restricted_zone_b_subnet_user_host_9
+
+Observation
+Shape      : (92,)
+Dimensions : 92
+
+Action Space
+Discrete(82)
+Total Actions : 82
+================================================================================
+BLUE_AGENT_3
+================================================================================
+
+Protected Subnets
+
+  • operational_zone_b_subnet
+
+Protected Hosts
+
+  • operational_zone_b_subnet_router
+  • operational_zone_b_subnet_server_host_0
+  • operational_zone_b_subnet_server_host_1
+  • operational_zone_b_subnet_server_host_2
+  • operational_zone_b_subnet_server_host_3
+  • operational_zone_b_subnet_server_host_4
+  • operational_zone_b_subnet_server_host_5
+  • operational_zone_b_subnet_user_host_0
+  • operational_zone_b_subnet_user_host_1
+  • operational_zone_b_subnet_user_host_2
+  • operational_zone_b_subnet_user_host_3
+  • operational_zone_b_subnet_user_host_4
+  • operational_zone_b_subnet_user_host_5
+  • operational_zone_b_subnet_user_host_6
+  • operational_zone_b_subnet_user_host_7
+  • operational_zone_b_subnet_user_host_8
+  • operational_zone_b_subnet_user_host_9
+
+Observation
+Shape      : (92,)
+Dimensions : 92
+
+Action Space
+Discrete(82)
+Total Actions : 82
+================================================================================
+BLUE_AGENT_4
+================================================================================
+
+Protected Subnets
+
+  • admin_network_subnet
+  • office_network_subnet
+  • public_access_zone_subnet
+
+Protected Hosts
+
+  • admin_network_subnet_router
+  • admin_network_subnet_server_host_0
+  • admin_network_subnet_server_host_1
+  • admin_network_subnet_server_host_2
+  • admin_network_subnet_server_host_3
+  • admin_network_subnet_server_host_4
+  • admin_network_subnet_server_host_5
+  • admin_network_subnet_user_host_0
+  • admin_network_subnet_user_host_1
+  • admin_network_subnet_user_host_2
+  • admin_network_subnet_user_host_3
+  • admin_network_subnet_user_host_4
+  • admin_network_subnet_user_host_5
+  • admin_network_subnet_user_host_6
+  • admin_network_subnet_user_host_7
+  • admin_network_subnet_user_host_8
+  • admin_network_subnet_user_host_9
+  • office_network_subnet_router
+  • office_network_subnet_server_host_0
+  • office_network_subnet_server_host_1
+  • office_network_subnet_server_host_2
+  • office_network_subnet_server_host_3
+  • office_network_subnet_server_host_4
+  • office_network_subnet_server_host_5
+  • office_network_subnet_user_host_0
+  • office_network_subnet_user_host_1
+  • office_network_subnet_user_host_2
+  • office_network_subnet_user_host_3
+  • office_network_subnet_user_host_4
+  • office_network_subnet_user_host_5
+  • office_network_subnet_user_host_6
+  • office_network_subnet_user_host_7
+  • office_network_subnet_user_host_8
+  • office_network_subnet_user_host_9
+  • public_access_zone_subnet_router
+  • public_access_zone_subnet_server_host_0
+  • public_access_zone_subnet_server_host_1
+  • public_access_zone_subnet_server_host_2
+  • public_access_zone_subnet_server_host_3
+  • public_access_zone_subnet_server_host_4
+  • public_access_zone_subnet_server_host_5
+  • public_access_zone_subnet_user_host_0
+  • public_access_zone_subnet_user_host_1
+  • public_access_zone_subnet_user_host_2
+  • public_access_zone_subnet_user_host_3
+  • public_access_zone_subnet_user_host_4
+  • public_access_zone_subnet_user_host_5
+  • public_access_zone_subnet_user_host_6
+  • public_access_zone_subnet_user_host_7
+  • public_access_zone_subnet_user_host_8
+  • public_access_zone_subnet_user_host_9
+
+Observation
+Shape      : (210,)
+Dimensions : 210
+
+Action Space
+Discrete(242)
+Total Actions : 242
+
+================================================================================
+SUMMARY
+================================================================================
+
+blue_agent_0     Hosts : 17   Subnets :  1   Observation :  92   Actions :  82
+blue_agent_1     Hosts : 17   Subnets :  1   Observation :  92   Actions :  82
+blue_agent_2     Hosts : 17   Subnets :  1   Observation :  92   Actions :  82
+blue_agent_3     Hosts : 17   Subnets :  1   Observation :  92   Actions :  82
+blue_agent_4     Hosts : 51   Subnets :  3   Observation : 210   Actions : 242
+
+================================================================================
+Environment inspection completed successfully.
+================================================================================
+(venv) anirudh@Anirudh:/mnt/c/cyber/cage-challenge-4$
