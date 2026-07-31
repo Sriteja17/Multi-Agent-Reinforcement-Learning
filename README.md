@@ -1,4 +1,19 @@
-soon
+### soon
+
+# sup gng :- (do this first)
+
+```
+git clone https://github.com/anirudh110106/Multi-Agent-Reinforcement-Learning
+
+cd Multi-Agent-Reinforcement-Learning
+
+python3 -m venv venv
+source venv/bin/activate
+pip install -r Requirements.txt
+pip install -e .
+sudo apt install python3-tk --assume-yes
+
+```
 
 go to marin repo: - (Multi-Agent-Reinforcement-Learning)
 
