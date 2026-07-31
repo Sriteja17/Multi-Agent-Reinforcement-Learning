@@ -16,7 +16,7 @@ from CybORG.Agents import (
 from CybORG.Simulator.Scenarios import EnterpriseScenarioGenerator
 from CybORG.Agents.Wrappers import EnterpriseMAE
 
-from config import EPISODE_LENGTH
+from .config import EPISODE_LENGTH
 
 
 class CC4Env:

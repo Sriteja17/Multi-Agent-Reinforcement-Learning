@@ -21,9 +21,9 @@ import torch
 import torch.nn as nn
 from torch.distributions import Categorical
 
-from networks import MAPPOModel
+from .network import MAPPOModel
 
-from config import (
+from .config import (
     DEVICE,
     LEARNING_RATE,
     MAX_GRAD_NORM,
@@ -166,6 +166,7 @@ class MAPPO:
         observation,
         action_mask=None,
         global_state=None,
+        agent_id = None,
     ):
         """
         Select an action using the shared actor.
@@ -262,7 +263,8 @@ class MAPPO:
                     device=self.device,
                 )
 
-            value = self.critic(global_state).squeeze()
+            # value = self.critic(global_state).squeeze()
+            value = self.critic(global_state)[agent_id]
 
         ########################################################
 
@@ -307,7 +309,8 @@ class MAPPO:
 
         value = self.critic(global_state)
 
-        return value.squeeze()
+        # return value.squeeze()
+        return self.critic(global_state)
 
     ############################################################
 
@@ -454,7 +457,8 @@ class MAPPO:
 
         values = self.critic(global_states)
 
-        return values.squeeze(-1)
+        # return values.squeeze(-1)
+        return self.critic(global_states)
 
     ############################################################
     # Evaluate Actions
@@ -465,6 +469,7 @@ class MAPPO:
         observations,
         global_states,
         actions,
+        agent_ids,
         action_masks=None,
     ):
         """
@@ -492,9 +497,21 @@ class MAPPO:
 
         entropy = distribution.entropy()
 
-        values = self.critic_forward(
-            global_states
-        )
+        # values = self.critic_forward(
+        #     global_states
+        # )
+        
+        values = self.critic_forward(global_states)
+
+        values = values[
+            torch.arange(
+                values.size(0),
+                device=self.device,
+            ),
+            agent_ids,
+        ]
+
+
 
         return (
             log_probs,
@@ -575,6 +592,10 @@ class MAPPO:
             NUM_AGENTS,
             dim=0,
         )
+        agent_ids = torch.arange(
+            NUM_AGENTS,
+            device=self.device,
+        ).repeat(T)
 
         ##########################################################
         # Normalize Advantages
@@ -642,7 +663,8 @@ class MAPPO:
 
                 mb_advantages = advantages[idx]
 
-                mb_masks = action_masks[idx]
+                mb_action_masks  = action_masks[idx]
+                mb_agent_ids = agent_ids[idx]
 
                 ##################################################
                 # Forward Pass
@@ -656,8 +678,9 @@ class MAPPO:
                         mb_global,
 
                         mb_actions,
+                        mb_agent_ids,
 
-                        mb_masks,
+                        mb_action_masks ,
                     )
 
                 ##################################################

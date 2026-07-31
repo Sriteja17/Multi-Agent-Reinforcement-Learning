@@ -17,7 +17,7 @@ communication and trust modules easy to add later.
 import numpy as np
 import torch
 
-from config import (
+from .config import (
     NUM_AGENTS,
     OBS_DIM,
     ACTION_DIM,

@@ -18,7 +18,7 @@ Graph Neural Networks or Transformers.
 import torch
 import torch.nn as nn
 
-from config import (
+from .config import (
     OBS_DIM,
     ACTION_DIM,
     HIDDEN_DIM,
@@ -116,7 +116,7 @@ class CentralCritic(nn.Module):
 
         self.value = build_mlp(
             global_dim,
-            1,
+            NUM_AGENTS,
         )
 
     def forward(self, global_state):
