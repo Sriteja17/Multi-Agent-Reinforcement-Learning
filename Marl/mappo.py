@@ -15,7 +15,8 @@ Contains
 
 The PPO update logic is implemented in Part 2.
 """
-
+import numpy as np
+import torch.nn.functional as F
 import torch
 import torch.nn as nn
 from torch.distributions import Categorical
@@ -26,6 +27,14 @@ from config import (
     DEVICE,
     LEARNING_RATE,
     MAX_GRAD_NORM,
+    UPDATE_EPOCHS,
+    MINIBATCH_SIZE,
+    PPO_CLIP,
+    VALUE_LOSS_COEF,
+    ENTROPY_COEF,
+    NORMALIZE_ADVANTAGES,
+    NUM_AGENTS,
+    OBS_DIM,
 )
 
 
@@ -69,39 +78,128 @@ class MAPPO:
     ############################################################
 
     @torch.no_grad()
+    # def select_action(
+    #     self,
+    #     observation,
+    #     action_mask=None,
+    #     global_state = None,
+    # ):
+    #     """
+    #     Parameters
+    #     ----------
+    #     observation
+
+    #         shape
+
+    #             [OBS_DIM]
+
+    #     action_mask
+
+    #         shape
+
+    #             [ACTION_DIM]
+
+    #         True  -> valid action
+
+    #         False -> invalid action
+
+    #     Returns
+    #     -------
+
+    #     action
+
+    #     log_prob
+
+    #     entropy
+    #     """
+
+    #     if not isinstance(observation, torch.Tensor):
+
+    #         observation = torch.tensor(
+    #             observation,
+    #             dtype=torch.float32,
+    #             device=self.device,
+    #         )
+
+    #     ########################################################
+
+    #     logits = self.actor(observation)
+
+    #     ########################################################
+    #     # Action Masking
+    #     ########################################################
+
+    #     if action_mask is not None:
+
+    #         if not isinstance(action_mask, torch.Tensor):
+
+    #             action_mask = torch.tensor(
+    #                 action_mask,
+    #                 dtype=torch.bool,
+    #                 device=self.device,
+    #             )
+
+    #         logits = logits.masked_fill(
+    #             ~action_mask,
+    #             -1e10,
+    #         )
+
+    #     ########################################################
+
+    #     distribution = Categorical(logits=logits)
+
+    #     action = distribution.sample()
+
+    #     log_prob = distribution.log_prob(action)
+
+    #     entropy = distribution.entropy()
+
+    #     return (
+    #         action.item(),
+    #         log_prob,
+    #         entropy,
+    #     )
+
+    @torch.no_grad()
     def select_action(
         self,
         observation,
         action_mask=None,
+        global_state=None,
     ):
         """
+        Select an action using the shared actor.
+
         Parameters
         ----------
-        observation
+        observation : array-like
+            Local observation of one blue agent.
 
-            shape
+        action_mask : array-like, optional
+            Boolean mask of valid actions.
 
-                [OBS_DIM]
-
-        action_mask
-
-            shape
-
-                [ACTION_DIM]
-
-            True  -> valid action
-
-            False -> invalid action
+        global_state : array-like, optional
+            Concatenated observations of all agents.
+            Used by the centralized critic.
 
         Returns
         -------
+        action : int
+            Sampled action.
 
-        action
+        log_prob : torch.Tensor
+            Log probability of sampled action.
 
-        log_prob
+        value : torch.Tensor or None
+            Critic value estimate.
 
-        entropy
+        entropy : torch.Tensor
+            Policy entropy.
         """
+
+        ########################################################
+        # Observation
+        ########################################################
 
         if not isinstance(observation, torch.Tensor):
 
@@ -112,11 +210,13 @@ class MAPPO:
             )
 
         ########################################################
+        # Actor Forward
+        ########################################################
 
         logits = self.actor(observation)
 
         ########################################################
-        # Action Masking
+        # Action Mask
         ########################################################
 
         if action_mask is not None:
@@ -135,6 +235,8 @@ class MAPPO:
             )
 
         ########################################################
+        # Distribution
+        ########################################################
 
         distribution = Categorical(logits=logits)
 
@@ -144,10 +246,31 @@ class MAPPO:
 
         entropy = distribution.entropy()
 
+        ########################################################
+        # Centralized Critic
+        ########################################################
+
+        value = None
+
+        if global_state is not None:
+
+            if not isinstance(global_state, torch.Tensor):
+
+                global_state = torch.tensor(
+                    global_state,
+                    dtype=torch.float32,
+                    device=self.device,
+                )
+
+            value = self.critic(global_state).squeeze()
+
+        ########################################################
+
         return (
             action.item(),
-            log_prob,
-            entropy,
+            log_prob.detach(),
+            None if value is None else value.detach(),
+            entropy.detach(),
         )
 
     ############################################################
@@ -378,3 +501,264 @@ class MAPPO:
             entropy,
             values,
         )
+# update stuff:-
+
+    def update(
+        self,
+        buffer,
+    ):
+        """
+        Perform one MAPPO update.
+
+        Part 3A
+
+        - Prepare tensors
+        - Normalize advantages
+        - Create minibatches
+        - Compute PPO losses
+
+        Part 3B will perform the optimizer steps.
+        """
+
+        batch = buffer.get_batches()
+
+        obs = batch["obs"]
+        global_obs = batch["global_obs"]
+
+        actions = batch["actions"]
+
+        old_log_probs = batch["log_probs"]
+
+        returns = batch["returns"]
+
+        advantages = batch["advantages"]
+
+        action_masks = batch["action_masks"]
+
+        ##########################################################
+        # Flatten Actor Inputs
+        ##########################################################
+
+        T = obs.shape[0]
+
+        obs = obs.reshape(
+            T * NUM_AGENTS,
+            OBS_DIM,
+        )
+
+        actions = actions.reshape(
+            T * NUM_AGENTS,
+        )
+
+        old_log_probs = old_log_probs.reshape(
+            T * NUM_AGENTS,
+        )
+
+        returns = returns.reshape(
+            T * NUM_AGENTS,
+        )
+
+        advantages = advantages.reshape(
+            T * NUM_AGENTS,
+        )
+
+        action_masks = action_masks.reshape(
+            T * NUM_AGENTS,
+            -1,
+        )
+
+        ##########################################################
+        # Critic Inputs
+        ##########################################################
+
+        global_obs = global_obs.repeat_interleave(
+            NUM_AGENTS,
+            dim=0,
+        )
+
+        ##########################################################
+        # Normalize Advantages
+        ##########################################################
+
+        if NORMALIZE_ADVANTAGES:
+
+            advantages = (
+                advantages
+                - advantages.mean()
+            ) / (
+                advantages.std() + 1e-8
+            )
+
+        ##########################################################
+        # Statistics
+        ##########################################################
+
+        actor_loss_epoch = 0.0
+        critic_loss_epoch = 0.0
+        entropy_epoch = 0.0
+
+        ##########################################################
+        # Number of Samples
+        ##########################################################
+
+        dataset_size = obs.shape[0]
+
+        ##########################################################
+        # PPO Epochs
+        ##########################################################
+
+        for epoch in range(UPDATE_EPOCHS):
+
+            permutation = torch.randperm(
+                dataset_size,
+                device=self.device,
+            )
+
+            ######################################################
+
+            for start in range(
+                0,
+                dataset_size,
+                MINIBATCH_SIZE,
+            ):
+
+                end = start + MINIBATCH_SIZE
+
+                idx = permutation[start:end]
+
+                ##################################################
+                # Mini-batch
+                ##################################################
+
+                mb_obs = obs[idx]
+
+                mb_global = global_obs[idx]
+
+                mb_actions = actions[idx]
+
+                mb_old_log_probs = old_log_probs[idx]
+
+                mb_returns = returns[idx]
+
+                mb_advantages = advantages[idx]
+
+                mb_masks = action_masks[idx]
+
+                ##################################################
+                # Forward Pass
+                ##################################################
+
+                new_log_probs, entropy, values = \
+                    self.evaluate_actions(
+
+                        mb_obs,
+
+                        mb_global,
+
+                        mb_actions,
+
+                        mb_masks,
+                    )
+
+                ##################################################
+                # PPO Ratio
+                ##################################################
+
+                ratio = torch.exp(
+                    new_log_probs
+                    - mb_old_log_probs
+                )
+
+                ##################################################
+                # Clipped Objective
+                ##################################################
+
+                surrogate1 = (
+                    ratio
+                    * mb_advantages
+                )
+
+                surrogate2 = (
+                    torch.clamp(
+                        ratio,
+                        1.0 - PPO_CLIP,
+                        1.0 + PPO_CLIP,
+                    )
+                    * mb_advantages
+                )
+
+                ##################################################
+                # Losses
+                ##################################################
+
+                actor_loss = -torch.min(
+                    surrogate1,
+                    surrogate2,
+                ).mean()
+
+                critic_loss = F.mse_loss(
+                    values,
+                    mb_returns,
+                )
+
+                entropy_loss = entropy.mean()
+
+                ##################################################
+                # Store statistics
+                ##################################################
+
+                actor_loss_epoch += actor_loss.item()
+
+                critic_loss_epoch += critic_loss.item()
+
+                entropy_epoch += entropy_loss.item()
+                ##################################################
+            # Total Loss
+            ##################################################
+
+                total_loss = (
+                    actor_loss
+                    + VALUE_LOSS_COEF * critic_loss
+                    - ENTROPY_COEF * entropy_loss
+                )
+
+                ##################################################
+                # Zero Gradients
+                ##################################################
+
+                self.actor_optimizer.zero_grad()
+
+                self.critic_optimizer.zero_grad()
+
+                ##################################################
+                # Backpropagation
+                ##################################################
+
+                total_loss.backward()
+
+                ##################################################
+                # Gradient Clipping
+                ##################################################
+
+                torch.nn.utils.clip_grad_norm_(
+                    self.actor.parameters(),
+                    self.max_grad_norm,
+                )
+
+                torch.nn.utils.clip_grad_norm_(
+                    self.critic.parameters(),
+                    self.max_grad_norm,
+                )
+                # step
+                self.actor_optimizer.step()
+                self.critic_optimizer.step()
+            
+            # Average statistics
+            
+
+        # num_updates = (UPDATE_EPOCHS* ((dataset_size + MINIBATCH_SIZE - 1) MINIBATCH_SIZE))
+        num_updates = (UPDATE_EPOCHS* ((dataset_size + MINIBATCH_SIZE - 1)// MINIBATCH_SIZE))
+        training_stats = {"actor_loss":actor_loss_epoch / num_updates,"critic_loss":critic_loss_epoch / num_updates,"entropy":entropy_epoch / num_updates,}
+        return training_stats
+
+    
