@@ -51,7 +51,12 @@ UPDATE_EPOCHS = 10
 
 MINIBATCH_SIZE = 256
 
-LEARNING_RATE = 3e-4
+# LEARNING_RATE = 3e-4
+#( separate learning rates trying )
+ACTOR_LEARNING_RATE = 3e-4
+CRITIC_LEARNING_RATE = 2e-4
+
+
 
 GAMMA = 0.99
 
@@ -115,3 +120,17 @@ MAX_GRAD_NORM = 0.5
 # Add these
 VALUE_CLIP = False          # Optional value clipping
 NORMALIZE_ADVANTAGES = True # Standard MAPPO practice
+
+
+
+# ==========================================================
+# Curriculum Learning
+# ==========================================================
+
+CURRICULUM_ENABLED = True
+
+CURRICULUM_STAGES = [
+    (0, "RandomSelectRedAgent"),
+    (4000, "FiniteStateRedAgent"),
+]
+CURRICULUM_SWITCH_EPISODE = 4000

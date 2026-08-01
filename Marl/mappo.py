@@ -26,6 +26,8 @@ from .network import MAPPOModel
 from .config import (
     DEVICE,
     LEARNING_RATE,
+    ACTOR_LEARNING_RATE,
+    CRITIC_LEARNING_RATE,
     MAX_GRAD_NORM,
     UPDATE_EPOCHS,
     MINIBATCH_SIZE,
@@ -61,12 +63,12 @@ class MAPPO:
 
         self.actor_optimizer = torch.optim.Adam(
             self.actor.parameters(),
-            lr=LEARNING_RATE,
+            lr=ACTOR_LEARNING_RATE,
         )
 
         self.critic_optimizer = torch.optim.Adam(
             self.critic.parameters(),
-            lr=LEARNING_RATE,
+            lr=CRITIC_LEARNING_RATE,
         )
 
         ########################################################

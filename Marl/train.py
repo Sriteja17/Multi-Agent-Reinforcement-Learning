@@ -24,6 +24,13 @@ from .env import CC4Env
 from .buffer import MAPPOBuffer
 from .mappo import MAPPO
 
+from CybORG.Agents import (
+    SleepAgent,#not using bhai
+    RandomSelectRedAgent,
+    FiniteStateRedAgent,
+)
+
+
 from .config import (
     NUM_AGENTS,
     OBS_DIM,
@@ -36,8 +43,14 @@ from .config import (
     SAVE_EVERY,
     CHECKPOINT_DIR,
     LOG_DIR,
+    CURRICULUM_SWITCH_EPISODE,
 )
 
+
+RED_AGENT_MAP = {
+    "RandomSelectRedAgent": RandomSelectRedAgent,
+    "FiniteStateRedAgent": FiniteStateRedAgent,
+}
 
 ############################################################
 # Seeding
@@ -107,6 +120,17 @@ def episode_is_done(terminated, truncated):
 # Main training loop
 ############################################################
 
+
+def get_curriculum_stage(episode):
+    """
+    Returns the Red agent class for the current training stage.
+    """
+
+    if episode < CURRICULUM_SWITCH_EPISODE:
+        return RandomSelectRedAgent
+    else:
+        return FiniteStateRedAgent
+
 def train():
 
     set_seed(SEED)
@@ -118,7 +142,12 @@ def train():
     # Environment
     ########################################################
 
-    env = CC4Env()
+    # env = CC4Env()
+
+    current_red_agent = get_curriculum_stage(0)
+    env = CC4Env(
+        red_agent_class=current_red_agent
+    )
 
     agent_names = sorted(env.possible_agents)
 
@@ -290,6 +319,18 @@ def train():
         if done_flag:
 
             episode_count += 1
+
+            new_red_agent = get_curriculum_stage(episode_count)
+            if new_red_agent != current_red_agent:
+                print(f"\n[Curriculum] Switching to {new_red_agent.__name__}")
+                current_red_agent = new_red_agent
+                env.close()
+                env = CC4Env(
+                    red_agent_class=current_red_agent
+                )
+                buffer.clear()
+
+
             # episode_returns_log.append(episode_return.sum())
 
             team_return = episode_return.sum()

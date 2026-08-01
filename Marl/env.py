@@ -21,12 +21,12 @@ from .config import EPISODE_LENGTH
 
 class CC4Env:
 
-    def __init__(self):
+    def __init__(self,red_agent_class=FiniteStateRedAgent):
 
         scenario = EnterpriseScenarioGenerator(
             blue_agent_class=SleepAgent,
             green_agent_class=EnterpriseGreenAgent,
-            red_agent_class=FiniteStateRedAgent,
+            red_agent_class=red_agent_class,
             steps=EPISODE_LENGTH,
         )
 
