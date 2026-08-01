@@ -23,7 +23,7 @@ python3 -m playschool.run_cc4
 ```
 # list actions :-
 ```
-python3 -m playschool.inspect_actions
+python3 -m playschool.inspect_action
 ```
 
 # List agent info :-
