@@ -24,16 +24,19 @@ OPERATIONAL_ZONE_B
 // 6 red agents are present but only 1 is activated at start.So the attack always begins in the Contractor Network, while the other red agents exist but remain inactive until later.
 //CC4 creates one green agent for every user host.
 
-total 91 hosts
-(91 separate machines)
-Each one can:-
+total 17 hosts per each blue agent (0-3)
+agent 4 has 51 hosts and 210 observations 
+
+
+(17 separate machines :- and each blue agent receives 92 observations from those 17 hosts)
+Each host can:-
 become infected
 get scanned
 be restored
 host malware
 run processes
 
-blue agent observes every host. Hence the size of the observation vector of each blue agent = number of hosts in its zone (91)
+blue agent get observations from the environment which contains hosts in it.
 
 
 
