@@ -97,7 +97,7 @@ SAVE_EVERY = 500
 
 CHECKPOINT_DIR = "checkpoints"
 
-LOG_DIR = "logs"
+LOG_DIR = "evaluation"
 
 
 # ==========================================================
@@ -134,3 +134,16 @@ CURRICULUM_STAGES = [
     (4000, "FiniteStateRedAgent"),
 ]
 CURRICULUM_SWITCH_EPISODE = 200
+
+
+CURRICULUM_SCHEDULE = [
+    (50, 0.20),   # 80% Random, 20% Finite
+    (100, 0.40),   # 60% Random, 40% Finite
+    (200, 0.60),   # 40% Random, 60% Finite
+    (300, 0.80),   # 20% Random, 80% Finite
+    (500, 1.00),  # 100% Finite
+]
+
+
+
+

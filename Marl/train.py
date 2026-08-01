@@ -40,6 +40,7 @@ from .config import (
     ROLLOUT_STEPS,
     SEED,
     PRINT_EVERY,
+    CURRICULUM_SCHEDULE,
     SAVE_EVERY,
     CHECKPOINT_DIR,
     LOG_DIR,
@@ -121,15 +122,39 @@ def episode_is_done(terminated, truncated):
 ############################################################
 
 
+# def get_curriculum_stage(episode):
+#     """
+#     Returns the Red agent class for the current training stage.
+#     """
+
+#     if episode < CURRICULUM_SWITCH_EPISODE:
+#         return RandomSelectRedAgent
+#     else:
+#         return FiniteStateRedAgent
+
+
+import random
+
+
 def get_curriculum_stage(episode):
     """
-    Returns the Red agent class for the current training stage.
+    Progressive probabilistic curriculum.
+
+    Returns the Red agent class for the current episode.
     """
 
-    if episode < CURRICULUM_SWITCH_EPISODE:
-        return RandomSelectRedAgent
-    else:
+    probability_finite = 1.0
+
+    for max_episode, p in CURRICULUM_SCHEDULE:
+
+        if episode < max_episode:
+            probability_finite = p
+            break
+
+    if random.random() < probability_finite:
         return FiniteStateRedAgent
+
+    return RandomSelectRedAgent
 
 def train():
 
@@ -316,24 +341,95 @@ def train():
         # Episode boundary
         ####################################################
 
+        # if done_flag:
+
+        #     episode_count += 1
+
+        #     # new_red_agent = get_curriculum_stage(episode_count)
+        #     # if new_red_agent != current_red_agent:
+        #     #     print(f"\n[Curriculum] Switching to {new_red_agent.__name__}")
+        #     #     current_red_agent = new_red_agent
+        #     #     # env.close()
+        #     #     env = CC4Env(
+        #     #         red_agent_class=current_red_agent
+        #     #     )
+        #     #     buffer.clear()
+
+        #     current_red_agent = get_curriculum_stage(
+        #         episode_count
+        #     )
+
+        #     env = CC4Env(
+        #         red_agent_class=current_red_agent
+        #     )
+
+        #     buffer.clear()
+
+        #     obs_dict, info = env.reset()
+
+        #     print(
+        #         f"[Episode {episode_count}] "
+        #         f"Red Agent: {current_red_agent.__name__}"
+        #     )
+
+
+        #     # episode_returns_log.append(episode_return.sum())
+
+        #     team_return = episode_return.sum()
+        #     episode_returns_log.append(team_return)
+        #     episode_return_history.append(team_return)
+
+        #     if episode_count % PRINT_EVERY == 0:
+
+        #         recent = episode_returns_log[-PRINT_EVERY:]
+        #         mean_return = float(np.mean(recent))
+
+        #         elapsed = time.time() - start_time
+
+        #         print(
+        #             f"[episode {episode_count:6d}] "
+        #             f"team_return={mean_return:8.2f}  "
+        #             f"updates={update_count:5d}  "
+        #             f"elapsed={elapsed:7.1f}s"
+        #         )
+
+        #     if episode_count % SAVE_EVERY == 0:
+
+        #         ckpt_path = os.path.join(
+        #             CHECKPOINT_DIR,
+        #             f"mappo_ep{episode_count}.pt",
+        #         )
+        #         ppo.save(ckpt_path)
+
+        #     episode_return[:] = 0.0
+
+        #     obs_dict, info = env.reset()
+        ####################################################
+# Episode boundary
+####################################################
+
         if done_flag:
 
             episode_count += 1
 
-            new_red_agent = get_curriculum_stage(episode_count)
-            if new_red_agent != current_red_agent:
-                print(f"\n[Curriculum] Switching to {new_red_agent.__name__}")
-                current_red_agent = new_red_agent
-                # env.close()
-                env = CC4Env(
-                    red_agent_class=current_red_agent
-                )
-                buffer.clear()
+            ################################################
+            # Sample curriculum for the NEXT episode
+            ################################################
 
+            current_red_agent = get_curriculum_stage(
+                episode_count
+            )
 
-            # episode_returns_log.append(episode_return.sum())
+            env = CC4Env(
+                red_agent_class=current_red_agent
+            )
+
+            ################################################
+            # Logging
+            ################################################
 
             team_return = episode_return.sum()
+
             episode_returns_log.append(team_return)
             episode_return_history.append(team_return)
 
@@ -348,8 +444,13 @@ def train():
                     f"[episode {episode_count:6d}] "
                     f"team_return={mean_return:8.2f}  "
                     f"updates={update_count:5d}  "
-                    f"elapsed={elapsed:7.1f}s"
+                    f"elapsed={elapsed:7.1f}s  "
+                    f"RedAgent={current_red_agent.__name__}"
                 )
+
+            ################################################
+            # Save checkpoint
+            ################################################
 
             if episode_count % SAVE_EVERY == 0:
 
@@ -357,12 +458,17 @@ def train():
                     CHECKPOINT_DIR,
                     f"mappo_ep{episode_count}.pt",
                 )
+
                 ppo.save(ckpt_path)
+
+            ################################################
+            # Reset episode
+            ################################################
 
             episode_return[:] = 0.0
 
-            obs_dict, info = env.reset()
-
+            # obs_dict, info = env.reset()
+            obs_dict, info = env.reset(seed=SEED + episode_count)
         ####################################################
         # PPO Update
         ####################################################
@@ -477,7 +583,7 @@ def train():
     plt.grid()
     plt.savefig("evaluation/entropy.png")
 
-    plt.show()
+    # plt.show()
 
 
 ############################################################
