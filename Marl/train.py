@@ -324,7 +324,7 @@ def train():
             if new_red_agent != current_red_agent:
                 print(f"\n[Curriculum] Switching to {new_red_agent.__name__}")
                 current_red_agent = new_red_agent
-                env.close()
+                # env.close()
                 env = CC4Env(
                     red_agent_class=current_red_agent
                 )

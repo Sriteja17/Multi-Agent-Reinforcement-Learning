@@ -43,7 +43,7 @@ ACTION_DIM = LARGE_ACTION_DIM
 # MAPPO Hyperparameters
 # ==========================================================
 
-TOTAL_EPISODES = 8000
+TOTAL_EPISODES = 500
 
 ROLLOUT_STEPS = 512
 
@@ -51,7 +51,7 @@ UPDATE_EPOCHS = 10
 
 MINIBATCH_SIZE = 256
 
-# LEARNING_RATE = 3e-4
+LEARNING_RATE = 3e-4
 #( separate learning rates trying )
 ACTOR_LEARNING_RATE = 3e-4
 CRITIC_LEARNING_RATE = 2e-4
@@ -126,11 +126,11 @@ NORMALIZE_ADVANTAGES = True # Standard MAPPO practice
 # ==========================================================
 # Curriculum Learning
 # ==========================================================
-
+USE_VALUE_NORM = True
 CURRICULUM_ENABLED = True
 
 CURRICULUM_STAGES = [
     (0, "RandomSelectRedAgent"),
     (4000, "FiniteStateRedAgent"),
 ]
-CURRICULUM_SWITCH_EPISODE = 4000
+CURRICULUM_SWITCH_EPISODE = 200

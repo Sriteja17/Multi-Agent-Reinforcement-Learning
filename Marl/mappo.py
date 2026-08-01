@@ -22,11 +22,14 @@ import torch.nn as nn
 from torch.distributions import Categorical
 
 from .network import MAPPOModel
+from .value_norm import ValueNorm
+
 
 from .config import (
     DEVICE,
     LEARNING_RATE,
     ACTOR_LEARNING_RATE,
+    USE_VALUE_NORM,
     CRITIC_LEARNING_RATE,
     MAX_GRAD_NORM,
     UPDATE_EPOCHS,
@@ -74,6 +77,12 @@ class MAPPO:
         ########################################################
 
         self.max_grad_norm = MAX_GRAD_NORM
+        # Value Normalization
+        self.value_norm = None
+        if USE_VALUE_NORM:
+            self.value_norm = ValueNorm(
+                device=self.device,
+            )
 
     ############################################################
     # Action Selection
@@ -267,7 +276,10 @@ class MAPPO:
 
             # value = self.critic(global_state).squeeze()
             value = self.critic(global_state)[agent_id]
-
+            if self.value_norm is not None:
+                value = self.value_norm.denormalize(
+                    value,
+                )
         ########################################################
 
         return (
@@ -309,10 +321,17 @@ class MAPPO:
                 device=self.device,
             )
 
-        value = self.critic(global_state)
+        # value = self.critic(global_state)
 
         # return value.squeeze()
-        return self.critic(global_state)
+        # return self.critic(global_state)
+
+        value = self.critic(global_state)
+        if self.value_norm is not None:
+            value = self.value_norm.denormalize(
+                value,
+            )
+        return value
 
     ############################################################
 
@@ -338,14 +357,17 @@ class MAPPO:
 
         checkpoint = {
 
-            "model": self.model.state_dict(),
+                "model": self.model.state_dict(),
 
-            "actor_optimizer":
-                self.actor_optimizer.state_dict(),
+                "actor_optimizer":
+                    self.actor_optimizer.state_dict(),
 
-            "critic_optimizer":
-                self.critic_optimizer.state_dict(),
+                "critic_optimizer":
+                    self.critic_optimizer.state_dict(),
 
+                "value_norm":
+                    None if self.value_norm is None
+                    else self.value_norm.state_dict(),
         }
 
         torch.save(
@@ -379,11 +401,10 @@ class MAPPO:
         self.critic_optimizer.load_state_dict(
             checkpoint["critic_optimizer"],
         )
-
-        ############################################################
+        if (self.value_norm is not None and checkpoint["value_norm"] is not None):
+            self.value_norm.load_state_dict(checkpoint["value_norm"])
+            
     # Internal
-    ############################################################
-
     def _apply_action_mask(
         self,
         logits,
@@ -598,19 +619,15 @@ class MAPPO:
             NUM_AGENTS,
             device=self.device,
         ).repeat(T)
-
-        ##########################################################
-        # Normalize Advantages
-        ##########################################################
-
         if NORMALIZE_ADVANTAGES:
-
             advantages = (
                 advantages
                 - advantages.mean()
             ) / (
                 advantages.std() + 1e-8
             )
+        if self.value_norm is not None:
+            self.value_norm.update(returns)
 
         ##########################################################
         # Statistics
@@ -662,6 +679,12 @@ class MAPPO:
                 mb_old_log_probs = old_log_probs[idx]
 
                 mb_returns = returns[idx]
+                if self.value_norm is not None:
+                    normalized_returns = self.value_norm.normalize(
+                        mb_returns,
+                    )
+                else:
+                    normalized_returns = mb_returns
 
                 mb_advantages = advantages[idx]
 
@@ -723,7 +746,7 @@ class MAPPO:
 
                 critic_loss = F.mse_loss(
                     values,
-                    mb_returns,
+                    normalized_returns,
                 )
 
                 entropy_loss = entropy.mean()
