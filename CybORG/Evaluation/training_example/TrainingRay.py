@@ -17,7 +17,9 @@ from ray.rllib.env import MultiAgentEnv
 from ray.rllib.algorithms.ppo import PPOConfig, PPO
 from ray.rllib.algorithms.dqn import DQNConfig, DQN
 from ray.rllib.policy.policy import PolicySpec
-from ray.rllib.utils import check_env
+# from ray.rllib.utils import check_env (older version dwag (freaky stuff everywhere))
+# from ray.rllib.utils.pre_checks.env import check_env
+
 from ray.tune import register_env
 
 import warnings
@@ -56,19 +58,61 @@ env = env_creator_CC4({})
 
 # Note:     will allow different action space sizes but not different observation space sizes in one property
 #           current implementation may cause issues - seems to want all same size???
+# algo_config = (
+#     DQNConfig().framework("torch")
+#     # .debugging(seed=0, log_level="ERROR")
+#     .debugging(logger_config={"logdir":"logs/DQN_Complicated_SleepRed", "type":"ray.tune.logger.TBXLogger"})
+#     .environment(env="CC4")
+#     # .training(model={"fcnet_hiddens":[32:32]})``
+#     .multi_agent(
+#         policies={
+#             ray_agent: PolicySpec(
+#                 policy_class=None,
+#                 observation_space=env.observation_space(cyborg_agent),
+#                 action_space=env.action_space(cyborg_agent),
+#                 config={"gamma": 0.85},
+#             )
+#             for cyborg_agent, ray_agent in POLICY_MAP.items()
+#         },
+#         policy_mapping_fn=policy_mapper,
+#     )
+# )
+
+
+
+
+
+
+
 algo_config = (
-    DQNConfig().framework("torch")
-    # .debugging(seed=0, log_level="ERROR")
-    .debugging(logger_config={"logdir":"logs/DQN_Complicated_SleepRed", "type":"ray.tune.logger.TBXLogger"})
-    .environment(env="CC4")
-    # .training(model={"fcnet_hiddens":[32:32]})``
+    PPOConfig()
+    .framework("torch")
+    .api_stack(
+        enable_rl_module_and_learner=False,
+        enable_env_runner_and_connector_v2=False,
+    )
+    .debugging(
+        logger_config={
+            "logdir": "logs/PPO_CC4",
+            "type": "ray.tune.logger.TBXLogger",
+        }
+    )
+    .environment(
+        env="CC4",
+        disable_env_checking=True,
+    )
+    .env_runners(
+    num_env_runners=0
+    )
+    .training(
+        gamma=0.99,
+        lr=3e-4,
+    )
     .multi_agent(
         policies={
             ray_agent: PolicySpec(
-                policy_class=None,
                 observation_space=env.observation_space(cyborg_agent),
                 action_space=env.action_space(cyborg_agent),
-                config={"gamma": 0.85},
             )
             for cyborg_agent, ray_agent in POLICY_MAP.items()
         },
@@ -76,7 +120,14 @@ algo_config = (
     )
 )
 
-check_env(env)
+
+
+
+
+
+
+
+# check_env(env)
 algo = algo_config.build()
 
 for i in range(1000):

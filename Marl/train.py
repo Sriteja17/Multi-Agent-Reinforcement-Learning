@@ -398,7 +398,7 @@ def train():
     plt.xlabel("Episode")
     plt.ylabel("Return")
     plt.grid()
-    plt.savefig("logs/episode_return.png")
+    plt.savefig("evaluation/episode_return.png")
 
     ########################################################
     # Actor Loss
@@ -410,7 +410,7 @@ def train():
     plt.xlabel("PPO Update")
     plt.ylabel("Loss")
     plt.grid()
-    plt.savefig("logs/actor_loss.png")
+    plt.savefig("evaluation/actor_loss.png")
 
     ########################################################
     # Critic Loss
@@ -422,7 +422,7 @@ def train():
     plt.xlabel("PPO Update")
     plt.ylabel("Loss")
     plt.grid()
-    plt.savefig("logs/critic_loss.png")
+    plt.savefig("evaluation/critic_loss.png")
 
     ########################################################
     # Entropy
@@ -434,7 +434,7 @@ def train():
     plt.xlabel("PPO Update")
     plt.ylabel("Entropy")
     plt.grid()
-    plt.savefig("logs/entropy.png")
+    plt.savefig("evaluation/entropy.png")
 
     plt.show()
 
