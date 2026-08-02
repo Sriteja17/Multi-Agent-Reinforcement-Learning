@@ -1,0 +1,17 @@
+
+CURRICULUM_SCHEDULE = [
+    (500, 0.20),   # 80% Random, 20% Finite
+    (2000, 0.40),   # 60% Random, 40% Finite
+    (4500, 0.60),   # 40% Random, 60% Finite
+    (7000, 0.80),   # 20% Random, 80% Finite
+    (10000, 1.00),  # 100% Finite
+]
+
+this is the curriculum used 
+10k episodes
+10 epochs 
+2 hidden layers
+value clipping = false
+ACTOR_LEARNING_RATE = 3e-4
+CRITIC_LEARNING_RATE = 2e-4
+

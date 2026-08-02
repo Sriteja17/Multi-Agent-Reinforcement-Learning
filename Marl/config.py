@@ -43,16 +43,17 @@ ACTION_DIM = LARGE_ACTION_DIM
 # MAPPO Hyperparameters
 # ==========================================================
 
-TOTAL_EPISODES =10000
+TOTAL_EPISODES =500
 
 ROLLOUT_STEPS = 512
 
-UPDATE_EPOCHS = 10
+UPDATE_EPOCHS = 5 #(was 10)
 
 MINIBATCH_SIZE = 256
 
 LEARNING_RATE = 3e-4
 #( separate learning rates trying )
+
 ACTOR_LEARNING_RATE = 3e-4
 CRITIC_LEARNING_RATE = 2e-4
 
@@ -77,7 +78,7 @@ MAX_GRAD_NORM = 0.5
 
 HIDDEN_DIM = 256
 
-NUM_HIDDEN_LAYERS = 2
+NUM_HIDDEN_LAYERS = 10 # (change back to 2 later!!!!)
 
 ACTIVATION = "relu"
 
@@ -96,7 +97,6 @@ PRINT_EVERY = 10
 SAVE_EVERY = 500
 
 CHECKPOINT_DIR = "checkpoints"
-
 LOG_DIR = "evaluation"
 
 
@@ -118,7 +118,7 @@ PPO_CLIP = 0.2
 MAX_GRAD_NORM = 0.5
 
 # Add these
-VALUE_CLIP = False          # Optional value clipping
+VALUE_CLIP = True #(was false)          # Optional value clipping
 NORMALIZE_ADVANTAGES = True # Standard MAPPO practice
 
 
@@ -137,9 +137,9 @@ CURRICULUM_SWITCH_EPISODE = 200
 
 
 CURRICULUM_SCHEDULE = [
-    (500, 0.20),   # 80% Random, 20% Finite
-    (2000, 0.40),   # 60% Random, 40% Finite
-    (4500, 0.60),   # 40% Random, 60% Finite
+    (500, 0.10),   # 80% Random, 20% Finite
+    (200, 0.40),   # 60% Random, 40% Finite
+    (500, 0.80),   # 40% Random, 60% Finite
     (7000, 0.80),   # 20% Random, 80% Finite
     (10000, 1.00),  # 100% Finite
 ]
