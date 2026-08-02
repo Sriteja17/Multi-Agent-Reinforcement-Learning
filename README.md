@@ -15,7 +15,7 @@ sudo apt install python3-tk --assume-yes
 
 ```
 
-go to marin repo: - (Multi-Agent-Reinforcement-Learning)
+go to main repo: - (Multi-Agent-Reinforcement-Learning)
 
 # test run :- 
 ```
