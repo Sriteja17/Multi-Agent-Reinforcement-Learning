@@ -532,7 +532,7 @@ def train():
     # Final checkpoint
     ########################################################
 
-    final_path = os.path.join(CHECKPOINT_DIR, "mappo_final_no_curriculum.pt")
+    final_path = os.path.join(CHECKPOINT_DIR, "mappo_final.pt")
     ppo.save(final_path)
 
     print(f"Training complete. Final checkpoint: {final_path}")
@@ -545,7 +545,7 @@ def train():
     plt.xlabel("Episode")
     plt.ylabel("Return")
     plt.grid()
-    plt.savefig("evaluation/episode_return_no_curriculum.png")
+    plt.savefig("evaluation/episode_return.png")
 
     ########################################################
     # Actor Loss
@@ -557,7 +557,7 @@ def train():
     plt.xlabel("PPO Update")
     plt.ylabel("Loss")
     plt.grid()
-    plt.savefig("evaluation/actor_loss_no_curriculum.png")
+    plt.savefig("evaluation/actor_loss.png")
 
     ########################################################
     # Critic Loss
@@ -569,7 +569,7 @@ def train():
     plt.xlabel("PPO Update")
     plt.ylabel("Loss")
     plt.grid()
-    plt.savefig("evaluation/critic_loss_no_curriculum.png")
+    plt.savefig("evaluation/critic_loss.png")
 
     ########################################################
     # Entropy
@@ -581,8 +581,7 @@ def train():
     plt.xlabel("PPO Update")
     plt.ylabel("Entropy")
     plt.grid()
-    plt.savefig("evaluation/entropy_no_curriculum.png")
-
+    plt.savefig("evaluation/entropy.png")
     # plt.show()
 
 

@@ -43,7 +43,7 @@ ACTION_DIM = LARGE_ACTION_DIM
 # MAPPO Hyperparameters
 # ==========================================================
 
-TOTAL_EPISODES =500
+TOTAL_EPISODES = 1000
 
 ROLLOUT_STEPS = 512
 
@@ -77,17 +77,10 @@ MAX_GRAD_NORM = 0.5
 # ==========================================================
 
 HIDDEN_DIM = 256
-
 NUM_HIDDEN_LAYERS = 10 # (change back to 2 later!!!!)
-
 ACTIVATION = "relu"
-
-
-# ==========================================================
-# Device
-# ==========================================================
-
 DEVICE = "cuda"
+
 # ==========================================================
 # Logging
 # ==========================================================
@@ -96,8 +89,8 @@ PRINT_EVERY = 10
 
 SAVE_EVERY = 500
 
-CHECKPOINT_DIR = "checkpoints"
-LOG_DIR = "evaluation"
+CHECKPOINT_DIR = "checkpoints/10_layer_curriculum"
+LOG_DIR = "evaluation/10_layer_curriculum"
 
 
 # ==========================================================
@@ -137,10 +130,10 @@ CURRICULUM_SWITCH_EPISODE = 200
 
 
 CURRICULUM_SCHEDULE = [
-    (500, 0.10),   # 80% Random, 20% Finite
+    (100, 0.20),   # 80% Random, 20% Finite
     (200, 0.40),   # 60% Random, 40% Finite
     (500, 0.80),   # 40% Random, 60% Finite
-    (7000, 0.80),   # 20% Random, 80% Finite
+    (1000, 1.00),   # 20% Random, 80% Finite
     (10000, 1.00),  # 100% Finite
 ]
 
