@@ -43,7 +43,7 @@ ACTION_DIM = LARGE_ACTION_DIM
 # MAPPO Hyperparameters
 # ==========================================================
 
-TOTAL_EPISODES = 500
+TOTAL_EPISODES =10000
 
 ROLLOUT_STEPS = 512
 
@@ -137,11 +137,11 @@ CURRICULUM_SWITCH_EPISODE = 200
 
 
 CURRICULUM_SCHEDULE = [
-    (50, 0.20),   # 80% Random, 20% Finite
-    (100, 0.40),   # 60% Random, 40% Finite
-    (200, 0.60),   # 40% Random, 60% Finite
-    (300, 0.80),   # 20% Random, 80% Finite
-    (500, 1.00),  # 100% Finite
+    (500, 0.20),   # 80% Random, 20% Finite
+    (2000, 0.40),   # 60% Random, 40% Finite
+    (4500, 0.60),   # 40% Random, 60% Finite
+    (7000, 0.80),   # 20% Random, 80% Finite
+    (10000, 1.00),  # 100% Finite
 ]
 
 
