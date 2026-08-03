@@ -1,5 +1,0 @@
-500 episodes
-5 epochs 
-5 hidden layers
-
-curriculum learning

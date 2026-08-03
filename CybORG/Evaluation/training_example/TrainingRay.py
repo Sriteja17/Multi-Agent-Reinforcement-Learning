@@ -29,7 +29,7 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 def env_creator_CC4(env_config: dict):
     sg = EnterpriseScenarioGenerator(
-        blue_agent_class=SleepAgent, #the class is sleep because this phase is only for testing purpose , the agent only observes the code and does not perform any action.
+        blue_agent_class=SleepAgent,
         green_agent_class=EnterpriseGreenAgent,
         red_agent_class=FiniteStateRedAgent,
         #red_agent_class=SleepAgent,

@@ -42,20 +42,17 @@ ACTION_DIM = LARGE_ACTION_DIM
 # ==========================================================
 # MAPPO Hyperparameters
 # ==========================================================
+TOTAL_EPISODES = 500
 
-TOTAL_EPISODES = 8000
 
 ROLLOUT_STEPS = 512
-
 UPDATE_EPOCHS = 5 #(was 10)
-
 MINIBATCH_SIZE = 256
-
 LEARNING_RATE = 3e-4
-#( separate learning rates trying )
 
+#( separate learning rates)
 ACTOR_LEARNING_RATE = 1e-4
-CRITIC_LEARNING_RATE = 1e-4
+CRITIC_LEARNING_RATE = 5e-5
 
 
 
@@ -85,11 +82,11 @@ DEVICE = "cuda"
 # Logging
 # ==========================================================
 
-PRINT_EVERY = 50
-SAVE_EVERY = 1000
+PRINT_EVERY = 10
+SAVE_EVERY = 500
 
-CHECKPOINT_DIR = "checkpoints/8k_attention"
-LOG_DIR = "evaluation/8k_attention"
+CHECKPOINT_DIR = "checkpoints/attention_test_curriculum"
+LOG_DIR = "evaluation/attention_test_curriculum"
 
 
 # ==========================================================
@@ -129,10 +126,10 @@ CURRICULUM_SWITCH_EPISODE = 200
 
 
 CURRICULUM_SCHEDULE = [
-    (500, 0.20),   # 80% Random, 20% Finite
-    (1500, 0.40),   # 60% Random, 40% Finite
-    (3000, 0.60),   # 40% Random, 60% Finite
-    (5000, 0.80),   # 20% Random, 80% Finite
+    (50, 0.10),   # 80% Random, 20% Finite
+    (200, 0.40),   # 60% Random, 40% Finite
+    (350, 0.80),   # 40% Random, 60% Finite
+    (500, 1.00),   # 20% Random, 80% Finite
     (10000, 1.00),  # 100% Finite
 ]
 
@@ -140,6 +137,6 @@ CURRICULUM_SCHEDULE = [
 
 
 # attention :-
-EMBED_DIM = 128
+EMBED_DIM = 256
 NUM_HEADS = 4
 

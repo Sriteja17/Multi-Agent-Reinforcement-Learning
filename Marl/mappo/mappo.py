@@ -477,11 +477,9 @@ class MAPPO:
             values
                 [B]
         """
-
         values = self.critic(global_states)
-
         # return values.squeeze(-1)
-        return self.critic(global_states)
+        return values
 
     ############################################################
     # Evaluate Actions
