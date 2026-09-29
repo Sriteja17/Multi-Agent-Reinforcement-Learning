@@ -72,7 +72,7 @@ from .env import CC4Env
 from .buffer import MAPPOBuffer
 from .mappo import MAPPO
 from .communication.evaluator import MessageEvaluator
-from .action_mask import compute_padded_mask
+from .action_mask import compute_padded_mask , compute_structural_padded_mask
 
 from .gnn_attention import (
     MISSION_DIM,
@@ -102,6 +102,7 @@ from .config import (
     SAVE_EVERY,
     CHECKPOINT_DIR,
     LOG_DIR,
+    USE_AAM,
 )
 
 
@@ -109,6 +110,8 @@ RED_AGENT_MAP = {
     "RandomSelectRedAgent": RandomSelectRedAgent,
     "FiniteStateRedAgent": FiniteStateRedAgent,
 }
+
+
 
 
 ############################################################
@@ -630,7 +633,14 @@ def train():
 
         for i, name in enumerate(agent_names):
 
-            mask = compute_padded_mask(env, name)
+
+
+            if USE_AAM:
+                mask = compute_padded_mask(env, name)
+            else :
+                mask = compute_structural_padded_mask(env , name)
+                
+
             masks_arr[i] = mask
 
             ################################################

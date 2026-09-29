@@ -93,9 +93,7 @@ in train.py / evaluate.py. No extra bookkeeping is required by callers.
 """
 
 from __future__ import annotations
-
 import numpy as np
-
 from .config import ACTION_DIM
 
 
@@ -247,6 +245,23 @@ def compute_padded_mask(env, agent_name, action_dim=ACTION_DIM):
     return pad_mask(
         compute_adaptive_mask(env, agent_name),
         action_dim=action_dim,
+    )
+
+def compute_structural_padded_mask(env, agent_name, action_dim=ACTION_DIM):
+    """
+    Return only CybORG's structural action mask,
+    padded to the shared MAPPO action dimension.
+
+    This is the AAM-OFF baseline.
+    """
+    structural = np.asarray(
+        env.action_mask(agent_name),
+        dtype=bool
+    )
+
+    return pad_mask(
+        structural,
+        action_dim=action_dim
     )
 
 

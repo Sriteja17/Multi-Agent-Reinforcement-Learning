@@ -43,7 +43,7 @@ ACTION_DIM = LARGE_ACTION_DIM
 # ==========================================================
 # MAPPO Hyperparameters
 # ==========================================================
-TOTAL_EPISODES = 20                             
+TOTAL_EPISODES = 1000                             
 
 ROLLOUT_STEPS = 512
 
@@ -97,8 +97,8 @@ PRINT_EVERY = 10
 
 SAVE_EVERY = 500
 
-CHECKPOINT_DIR = "checkpoints/groundTruth"
-LOG_DIR = "evaluation/groundTruth"
+CHECKPOINT_DIR = "checkpoints/latest"
+LOG_DIR = "evaluation/latest"
 
 
 # ==========================================================
@@ -132,6 +132,8 @@ CURRICULUM_SCHEDULE = [
     (1000, 1.00),   # 100% Finite
     (10000, 1.00),  # 100% Finite
 ]
+
+USE_AAM = False
 
 
 # ==========================================================
