@@ -95,7 +95,7 @@ This project addresses each of these directly, rather than treating MAPPO as an 
 4. **Install the CybORG package in editable mode:**
 
    ```bash
-   pip install -e ./CybORG
+   pip install -e .
    ```
 
 5. **Install system dependencies** (required for some GUI/evaluation components):
