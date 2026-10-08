@@ -375,9 +375,6 @@ def build_mlp(
     input_dim: int,
     output_dim: int,
 ):
-    """
-    Build the standard MAPPO MLP.
-    """
 
     layers = []
 
@@ -1429,7 +1426,6 @@ class CentralCritic(nn.Module):
         )
 
         self.norm2 = nn.LayerNorm(EMBED_DIM)
-
         self.value_head = build_mlp(EMBED_DIM, 1)
 
     def forward(self, global_state: torch.Tensor):

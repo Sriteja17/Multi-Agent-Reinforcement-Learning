@@ -1,100 +1,50 @@
 """
-manual_input_receiver_prediction_test.py
+test_communication.py  (manual input -> receiver model prediction)
 
 MANUAL INPUT -> MODEL PREDICTION communication test.
 
 You choose the sender, the receivers, and all seven StructuredMessage
-fields by hand. Nothing about the message content is predicted or
-decoded -- it is exactly what you typed. What IS a genuine model
-output is what happens after that: the message is encoded with the
-project's real trained MessageEncoder, and each receiver's ACTUAL
-trained SharedActor is run forward on it, with the frozen trust from
-your checkpoint applied exactly where the trained architecture applies
-it.
+fields by hand. The message is encoded with the project's real trained
+MessageEncoder, and each receiver's ACTUAL trained SharedActor is run
+forward on it, with the frozen trust from your checkpoint applied where
+the trained architecture applies it.
 
-Traced receiver-side path (read this before trusting the output)
-------------------------------------------------------------------
-There is NO component anywhere in this codebase that takes a received
-message and decodes/classifies it back into a semantic judgement, e.g.
-"receiver believes this means COMPROMISE at Host_X". MessageEvaluator
-(communication/evaluator.py) sounds like it might do that, but it does
-NOT run through any trained weights -- it is a training-time, rule-
-based Python comparator that grades a message against environment
-ground truth purely to drive the trust UPDATE. It has nothing to do
-with the receiver's neural pathway. Using it here would be exactly the
-invented rule-based prediction this file was asked not to build, so
-this file never imports or calls it.
+Traced receiver-side path
+-------------------------
+There is NO component in this codebase that decodes a received message
+back into a semantic judgement. MessageEvaluator is a training-time,
+rule-based comparator used only for the trust UPDATE, so it is never
+imported here. The real receiver path (gnn_attention.py SharedActor) is:
 
-The actual, real, trained receiver-side path -- traced directly from
-gnn_attention.py's SharedActor -- is:
+    local_hidden = self._get_local_hidden(observation)
+    keys/values  = communication_key/value(messages)
+    values       = values * trust.clamp(1e-4, 1.0)      <- frozen trust
+    context, w   = communication_attention(query, keys, values)
+    logits       = policy_head(concat([local_hidden, context]))
 
-    SharedActor.forward(observation, received_messages, trust_weights)
-        -> local_hidden = self._get_local_hidden(observation)   [receiver's OWN observation]
-        -> self._apply_received_communication(...):
-               keys   = self.communication_key(messages)
-               values = self.communication_value(messages)
-               values = values * trust.clamp(1e-4, 1.0)         <-- frozen trust scales here
-               query  = self.communication_query(local_hidden)
-               context, communication_weights = self.communication_attention(
-                   query, keys, values, need_weights=True
-               )
-               self.last_communication_attention = communication_weights.detach()  <-- inspectable
-        -> policy_representation = concat([local_hidden, context])
-        -> logits = self.policy_head(policy_representation)     <-- ACTION logits, nothing else
+So "model-derived result" here means exactly:
+    1. the attention weight the receiver assigns to this message slot
+       (actor.last_communication_attention), and
+    2. the shift in the receiver's action distribution versus a
+       baseline pass with no message (greedy action change, top-k
+       probabilities, KL divergence).
 
-The trained model only ever uses a received message to modulate the
-receiver's ACTION policy, through exactly one trust-scaled cross-
-attention layer. There is no other receiver-side output to read. So
-"model-derived result" in this file means, honestly and exactly:
-
-    1. The attention weight the receiver's OWN trained attention head
-       assigns to this exact message (read from
-       actor.last_communication_attention after a real forward pass).
-       Trust is already baked into this number, since trust scales the
-       attention VALUES before the weights are computed.
-
-    2. The measurable shift in the receiver's action distribution
-       caused by this message, versus a baseline forward pass with no
-       message at all -- computed via ppo.actor_forward(), the exact
-       function evaluate.py's select_action_greedy() calls. Reported
-       as: whether the greedy action changes, the top-k action
-       probabilities with the message present, and the KL divergence
-       between the with-message and without-message policies.
-
-Nothing here decodes the message back into StructuredMessage fields,
-and nothing here is a hand-written scoring rule. If what you actually
-want is a literal "receiver interprets this as X" output, that would
-require a NEW, trained, receiver-side auxiliary head added to the
-model (e.g. one trained to predict environment ground truth from the
-post-attention receiver hidden state) -- that component does not exist
-in this codebase today, and this file does not fake one.
-
-Flow printed by this script:
-
-    MANUAL INPUT
-        -> ENCODED 128-D MESSAGE      (real MessageEncoder, no copy)
-        -> RECEIVER MODEL PREDICTION  (real SharedActor forward: attention weight + action-distribution shift)
-        -> FROZEN TRUST FOR EACH RECEIVER
-
-IMPORTANT:
-    Does not modify schema.py, encoder.py, decoder.py,
-    structured_communication.py, trust.py, gnn_attention.py, mappo.py,
-    env.py, train.py, action_mask.py, or evaluate.py -- it only
-    imports pad_observation()/episode_is_done() from train.py and
-    compute_padded_mask() from action_mask.py, which are the project's
-    own, already-used entry points for exactly this purpose. Trust is
-    loaded from the checkpoint and never updated; no PPO update is
-    performed anywhere in this file.
+Nothing here modifies schema/encoder/decoder/trust/gnn_attention/mappo/
+env/train/action_mask/evaluate. Trust is loaded and never updated; no
+PPO update is performed.
 
 Run from the project root:
 
-    python -m Marl.mappo.manual_input_receiver_prediction_test
+    python -m Marl.mappo.test_communication
+    python -m Marl.mappo.test_communication --checkpoint path/to/file.pt
 """
 
 from __future__ import annotations
 
+import argparse
 import os
-from typing import Dict, List
+import time
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import torch
@@ -104,8 +54,7 @@ from .env import CC4Env
 from .mappo import MAPPO
 from .train import pad_observation, episode_is_done
 from .action_mask import compute_padded_mask
-from .config import NUM_AGENTS, OBS_DIM, ACTION_DIM
-from .gnn_attention import MESSAGE_DIM
+from .config import NUM_AGENTS, OBS_DIM
 from .communication.schema import (
     ConfidenceLevel,
     EventType,
@@ -124,13 +73,11 @@ from .communication.schema import (
 
 CHECKPOINT_PATH = (
     "/mnt/c/cyber/cage-challenge-4/"
-    "checkpoints/gnn_attention_AAM_newMappo/mappo_final.pt"
+    "checkpoints/latest/mappo_final.pt"
 )
 
-# How many steps to advance the environment (random Blue actions --
-# only receiver OBSERVATIONS are needed from this, not any particular
-# policy behavior) before reading the real observations used as each
-# receiver's "own state" during the forward pass below.
+# Steps to advance the environment (random Blue actions) so receiver
+# observations are not a trivial freshly-reset state.
 WARMUP_STEPS = 5
 
 TOP_K_ACTIONS = 5
@@ -140,26 +87,40 @@ TOP_K_ACTIONS = 5
 # Checkpoint helpers
 # ============================================================================
 
-def get_checkpoint_num_targets(checkpoint_path: str):
+def load_checkpoint(checkpoint_path: str) -> dict:
     """
-    Read the communication target vocabulary sizes directly from the
-    checkpoint.
+    Load the checkpoint ONCE and report exactly which file was read.
 
-    HOST and SUBNET are separate, independently-sized vocabularies
-    (see mappo.py's module docstring) -- there is no longer a single
-    combined "num_targets". MAPPO.save() persists both directly on the
-    checkpoint dict as "num_host_targets" / "num_subnet_targets", so
-    this reads those keys rather than inferring a shape from a single
-    target_head weight, which no longer exists as one tensor (the
-    decoder now has separate host_target_head/subnet_target_head).
-
-    Returns
-    -------
-    (int, int or None)
-        (num_host_targets, num_subnet_targets).
+    weights_only=False is explicit: newer PyTorch defaults to True,
+    which can reject checkpoints that store extra Python objects
+    (optimizer state, trust state, value normalizer).
     """
 
-    checkpoint = torch.load(checkpoint_path, map_location="cpu")
+    if not os.path.isfile(checkpoint_path):
+        raise FileNotFoundError(f"Checkpoint not found:\n{checkpoint_path}")
+
+    real_path = os.path.realpath(checkpoint_path)
+    stat = os.stat(real_path)
+
+    print()
+    print("=" * 72)
+    print("LOADING CHECKPOINT FILE")
+    print("=" * 72)
+    print(f"Requested : {checkpoint_path}")
+    print(f"Resolved  : {real_path}")
+    print(f"Size      : {stat.st_size:,} bytes")
+    print(
+        "Modified  : "
+        + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(stat.st_mtime))
+    )
+
+    try:
+        checkpoint = torch.load(
+            real_path, map_location="cpu", weights_only=False
+        )
+    except TypeError:
+        # Very old PyTorch without the weights_only argument.
+        checkpoint = torch.load(real_path, map_location="cpu")
 
     if not isinstance(checkpoint, dict):
         raise RuntimeError(
@@ -167,52 +128,90 @@ def get_checkpoint_num_targets(checkpoint_path: str):
             f"got {type(checkpoint).__name__}."
         )
 
+    print(f"Top-level keys: {list(checkpoint.keys())}")
+
     if "model" not in checkpoint:
         raise RuntimeError("Checkpoint does not contain a 'model' state_dict.")
+
+    return checkpoint
+
+
+def resolve_target_counts(
+    checkpoint: dict,
+) -> Tuple[int, Optional[int], str]:
+    """
+    Return (num_host_targets, num_subnet_targets, source).
+
+    Preferred source: the explicit keys MAPPO.save() writes. If they are
+    missing, fall back to the output size of the decoder's
+    host_target_head / subnet_target_head in the saved state_dict. If
+    neither exists, the checkpoint genuinely predates the split.
+    """
 
     num_host_targets = checkpoint.get("num_host_targets")
     num_subnet_targets = checkpoint.get("num_subnet_targets")
 
-    if num_host_targets is None:
-        raise RuntimeError(
-            "Checkpoint does not contain 'num_host_targets'. This "
-            "checkpoint predates the host/subnet target split and "
-            "cannot be loaded by this script."
+    if num_host_targets is not None:
+        source = "checkpoint keys"
+    else:
+        state = checkpoint["model"]
+
+        host_keys = sorted(
+            k for k in state
+            if "host_target_head" in k and k.endswith("weight")
         )
+        subnet_keys = sorted(
+            k for k in state
+            if "subnet_target_head" in k and k.endswith("weight")
+        )
+
+        if not host_keys:
+            target_like = sorted(k for k in state if "target" in k)
+            raise RuntimeError(
+                "Checkpoint has no 'num_host_targets' key and no "
+                "host_target_head weight, so it predates the host/subnet "
+                "target split (or uses different names).\n"
+                f"Top-level keys: {list(checkpoint.keys())}\n"
+                "State-dict keys containing 'target':\n  "
+                + "\n  ".join(target_like or ["<none>"])
+            )
+
+        num_host_targets = int(state[host_keys[0]].shape[0])
+        num_subnet_targets = (
+            int(state[subnet_keys[0]].shape[0]) if subnet_keys else None
+        )
+        source = f"inferred from {host_keys[0]}"
+
+    num_host_targets = int(num_host_targets)
 
     if num_host_targets <= 0:
         raise RuntimeError(
-            f"Invalid checkpoint num_host_targets: {num_host_targets}"
+            f"Invalid num_host_targets: {num_host_targets}"
         )
 
-    if num_subnet_targets is not None and num_subnet_targets <= 0:
-        raise RuntimeError(
-            f"Invalid checkpoint num_subnet_targets: {num_subnet_targets}"
-        )
+    if num_subnet_targets is not None:
+        num_subnet_targets = int(num_subnet_targets)
+        if num_subnet_targets <= 0:
+            raise RuntimeError(
+                f"Invalid num_subnet_targets: {num_subnet_targets}"
+            )
 
-    return num_host_targets, num_subnet_targets
+    return num_host_targets, num_subnet_targets, source
 
 
 def load_trained_mappo(checkpoint_path: str):
     """
-    Construct the same MAPPO architecture used by the checkpoint and
-    load it. Trust state is restored, then left completely frozen --
-    this file never calls ppo.update_trust() or performs a PPO update.
+    Build the same MAPPO architecture the checkpoint was trained with and
+    load it. Trust is restored and left frozen.
     """
 
-    if not os.path.isfile(checkpoint_path):
-        raise FileNotFoundError(f"Checkpoint not found:\n{checkpoint_path}")
+    checkpoint = load_checkpoint(checkpoint_path)
 
-    num_host_targets, num_subnet_targets = get_checkpoint_num_targets(
-        checkpoint_path
+    num_host_targets, num_subnet_targets, source = resolve_target_counts(
+        checkpoint
     )
 
-    print()
-    print("=" * 72)
-    print("LOADING TRAINED MODEL")
-    print("=" * 72)
-    print(f"Checkpoint    : {checkpoint_path}")
-    print(f"Host targets  : {num_host_targets}")
+    print(f"Host targets  : {num_host_targets}  ({source})")
     print(f"Subnet targets: {num_subnet_targets}")
 
     ppo = MAPPO(
@@ -220,13 +219,10 @@ def load_trained_mappo(checkpoint_path: str):
         num_subnet_targets=num_subnet_targets,
     )
 
-    checkpoint = torch.load(checkpoint_path, map_location=ppo.device)
-
     model_state = checkpoint["model"]
 
-    # Obsolete GNN buffers from the checkpoint version this model was
-    # trained with -- current gnn_attention.py builds its own
-    # structural_adjacency / real_topology buffers instead.
+    # Obsolete GNN buffers from older checkpoints; current gnn_attention.py
+    # builds its own structural_adjacency / real_topology buffers.
     obsolete_keys = {"actor.gnn1.adjacency", "actor.gnn2.adjacency"}
 
     model_state = {
@@ -242,16 +238,13 @@ def load_trained_mappo(checkpoint_path: str):
         "actor.real_topology",
     }
 
-    unexpected_set = set(unexpected)
-    missing_set = set(missing)
-
-    if unexpected_set:
+    if unexpected:
         raise RuntimeError(
             "Unexpected checkpoint keys after compatibility filtering:\n"
-            + "\n".join(sorted(unexpected_set))
+            + "\n".join(sorted(unexpected))
         )
 
-    unexpected_missing = missing_set - expected_missing
+    unexpected_missing = set(missing) - expected_missing
 
     if unexpected_missing:
         raise RuntimeError(
@@ -268,9 +261,8 @@ def load_trained_mappo(checkpoint_path: str):
 
     ppo.eval()
 
-    print("Model      : loaded successfully")
-    print("Trust      : loaded from checkpoint")
-    print("Trust      : frozen for this test")
+    print("Model         : loaded successfully")
+    print("Trust         : loaded from checkpoint (frozen for this test)")
     print("=" * 72)
 
     return ppo, num_host_targets, num_subnet_targets
@@ -293,10 +285,9 @@ def build_observation_batch(agent_names, obs_dims, obs_dict) -> np.ndarray:
 
 def advance_environment(env, warmup_steps: int):
     """
-    Reset, then step forward with random Blue actions so receiver
-    observations aren't a trivial freshly-reset state. Only the
-    COMMUNICATION path is under test here, so the specific actions
-    taken don't matter.
+    Reset, then step with random Blue actions so receiver observations are
+    not a trivial freshly-reset state. Only the communication path is under
+    test, so the specific actions do not matter.
     """
 
     obs_dict, info = env.reset()
@@ -392,10 +383,6 @@ def choose_receivers(sender: int, num_agents: int) -> List[int]:
             print("Invalid selection.")
             continue
 
-        if not selected:
-            print("Select at least one receiver.")
-            continue
-
         if len(set(selected)) != len(selected):
             print("Do not select the same receiver twice.")
             continue
@@ -413,11 +400,7 @@ def choose_receivers(sender: int, num_agents: int) -> List[int]:
 
 
 def choose_target_id(num_targets: int) -> int:
-    """
-    Select a target ID within the given vocabulary. HOST and SUBNET
-    are separate, independently-sized vocabularies (see schema.py) --
-    the caller picks which count to pass based on target_type.
-    """
+    """Select a target ID within the given vocabulary."""
 
     print()
     print("Target ID")
@@ -440,9 +423,9 @@ def choose_target_id(num_targets: int) -> int:
 
 def build_manual_message(
     num_host_targets: int,
-    num_subnet_targets: int,
+    num_subnet_targets: Optional[int],
 ) -> StructuredMessage:
-    """Ask the user for all seven schema fields -- this IS the input."""
+    """Ask for all seven schema fields -- this IS the input."""
 
     print()
     print("=" * 72)
@@ -457,9 +440,9 @@ def build_manual_message(
     elif target_type == TargetType.SUBNET:
         if num_subnet_targets is None:
             raise RuntimeError(
-                "This checkpoint was not trained with a SUBNET "
-                "target vocabulary (num_subnet_targets is None), "
-                "so a SUBNET target cannot be selected."
+                "This checkpoint has no SUBNET target vocabulary "
+                "(num_subnet_targets is None), so a SUBNET target cannot "
+                "be selected."
             )
         target_id = choose_target_id(num_subnet_targets)
     else:
@@ -488,86 +471,52 @@ def build_manual_message(
 # ============================================================================
 
 def message_to_field_ids(
-        message: StructuredMessage,
-        device: torch.device,
-    ) -> Dict[str, torch.Tensor]:
-        """Convert the manually chosen StructuredMessage into batch-of-1 ids."""
+    message: StructuredMessage,
+    device: torch.device,
+) -> Dict[str, torch.Tensor]:
+    """Convert the manually chosen StructuredMessage into batch-of-1 ids."""
 
-        confidence_id = min(
-            range(len(ConfidenceLevel)),
-            key=lambda level: abs(
-                confidence_level_to_value(level)
-                - message.confidence
-            ),
-        )
+    levels = list(ConfidenceLevel)
 
-        return {
-            "event_type": torch.tensor(
-                [int(message.event_type)],
-                dtype=torch.long,
-                device=device,
-            ),
-            "target_type": torch.tensor(
-                [int(message.target_type)],
-                dtype=torch.long,
-                device=device,
-            ),
-            "target_id": torch.tensor(
-                [int(message.target_id)],
-                dtype=torch.long,
-                device=device,
-            ),
-            "threat_level": torch.tensor(
-                [int(message.threat_level)],
-                dtype=torch.long,
-                device=device,
-            ),
-            "confidence": torch.tensor(
-                [int(confidence_id)],
-                dtype=torch.long,
-                device=device,
-            ),
-            "status": torch.tensor(
-                [int(message.status)],
-                dtype=torch.long,
-                device=device,
-            ),
-            "priority": torch.tensor(
-                [int(message.priority)],
-                dtype=torch.long,
-                device=device,
-            ),
-        }
+    # Snap the numeric confidence back to the nearest discrete level index.
+    confidence_id = min(
+        range(len(levels)),
+        key=lambda i: abs(
+            confidence_level_to_value(levels[i]) - message.confidence
+        ),
+    )
+
+    def ids(value: int) -> torch.Tensor:
+        return torch.tensor([int(value)], dtype=torch.long, device=device)
+
+    return {
+        "event_type": ids(message.event_type),
+        "target_type": ids(message.target_type),
+        "target_id": ids(message.target_id),
+        "threat_level": ids(message.threat_level),
+        "confidence": ids(confidence_id),
+        "status": ids(message.status),
+        "priority": ids(message.priority),
+    }
 
 
 def encode_manual_message(
-        ppo: MAPPO,
-        message: StructuredMessage,
-    ) -> torch.Tensor:
-        """
-        Encode using the project's REAL trained MessageEncoder.
+    ppo: MAPPO,
+    message: StructuredMessage,
+) -> torch.Tensor:
+    """Encode using the project's REAL trained MessageEncoder."""
 
-        The manually created field IDs are placed on the same device
-        as the trained encoder parameters.
-        """
+    encoder = ppo.actor.communication.encoder
 
-        encoder = ppo.actor.communication.encoder
+    device = next(encoder.parameters()).device
 
-        device = next(
-            encoder.parameters()
-        ).device
+    field_ids = message_to_field_ids(message, device)
 
-        field_ids = message_to_field_ids(
-            message,
-            device,
-        )
+    with torch.no_grad():
+        vector = encoder.encode_from_ids(field_ids)
 
-        with torch.no_grad():
-            vector = encoder.encode_from_ids(
-                field_ids
-            )
+    return vector.squeeze(0)
 
-        return vector.squeeze(0)
 
 # ============================================================================
 # Real receiver-side forward pass
@@ -583,62 +532,32 @@ def run_receiver_model(
     encoded_vector: torch.Tensor,
 ):
     """
-    Run the receiver's ACTUAL trained SharedActor forward pass, once
-    with the manually-built message present and once without, using
-    the exact function evaluate.py's select_action_greedy() calls
-    (ppo.actor_forward -> self.actor(...) -> real policy_head logits).
-
-    Returns
-    -------
-    dict with:
-        trust_score               frozen trust(sender -> receiver)
-        attention_weight          receiver's trained attention weight
-                                   on sender's message slot (trust
-                                   already baked in -- see module
-                                   docstring)
-        baseline_action           greedy action with NO message
-        message_action             greedy action WITH the message
-        action_changed             bool
-        top_actions                list of (label, probability) with
-                                    the message present
-        kl_divergence              KL(with_message || without_message)
+    Run the receiver's trained SharedActor once without the message and
+    once with it, via ppo.actor_forward() (the function evaluate.py's
+    select_action_greedy() uses).
     """
 
-    device = next(
-        ppo.actor.parameters()
-    ).device
+    device = next(ppo.actor.parameters()).device
 
     receiver_obs = torch.as_tensor(
-        obs_array[receiver],
-        dtype=torch.float32,
-        device=device,
+        obs_array[receiver], dtype=torch.float32, device=device
     )
 
-    # mask = compute_padded_mask(env, agent_names[receiver])
-    # mask_tensor = torch.as_tensor(mask, dtype=torch.bool)
+    mask = compute_padded_mask(env, agent_names[receiver])
 
-    mask = compute_padded_mask(
-        env,
-        agent_names[receiver],
-    )
+    mask_tensor = torch.as_tensor(mask, dtype=torch.bool, device=device)
 
-    mask_tensor = torch.as_tensor(
-        mask,
-        dtype=torch.bool,
-        device=device,
-    )
-
-    trust_row = ppo.get_trust_for_agent(receiver_id=receiver)  # [NUM_AGENTS], frozen
+    trust_row = ppo.get_trust_for_agent(receiver_id=receiver)  # frozen
     trust_score = float(trust_row[sender].item())
 
     messages_matrix = torch.zeros(
         NUM_AGENTS,
         encoded_vector.numel(),
         dtype=encoded_vector.dtype,
-        device=encoded_vector.device,
+        device=device,
     )
 
-    messages_matrix[sender] = encoded_vector
+    messages_matrix[sender] = encoded_vector.to(device)
 
     with torch.no_grad():
 
@@ -656,15 +575,15 @@ def run_receiver_model(
             trust_weights=trust_row,
         )
 
-    # actor.last_communication_attention is set as a side effect of the
-    # attention branch inside _apply_received_communication() -- only
-    # populated on the WITH-message call above, since the baseline call
-    # (received_messages=None) skips that branch entirely.
-    attention = ppo.actor.last_communication_attention
+    # last_communication_attention is only populated by the WITH-message
+    # call (the baseline call skips the attention branch).
+    attention = getattr(ppo.actor, "last_communication_attention", None)
 
-    # Shape is [batch=1, target_len=1, source_len=NUM_AGENTS] with
-    # need_weights=True's default head-averaging.
-    attention_weight = float(attention[0, 0, sender].item())
+    attention_weight = None
+
+    if attention is not None:
+        flat = attention.reshape(-1, attention.shape[-1])
+        attention_weight = float(flat[0, sender].item())
 
     baseline_dist = Categorical(logits=baseline_logits)
     message_dist = Categorical(logits=message_logits)
@@ -673,19 +592,19 @@ def run_receiver_model(
     message_action = int(torch.argmax(message_dist.probs).item())
 
     top_probs, top_indices = torch.topk(
-        message_dist.probs, k=min(TOP_K_ACTIONS, message_dist.probs.shape[-1])
+        message_dist.probs,
+        k=min(TOP_K_ACTIONS, message_dist.probs.shape[-1]),
     )
 
     labels = env.action_labels(agent_names[receiver])
 
     top_actions = []
-    for prob, idx in zip(top_probs.tolist(), top_indices.tolist()):
+    for prob, idx in zip(top_probs.reshape(-1).tolist(),
+                         top_indices.reshape(-1).tolist()):
         label = labels[idx] if idx < len(labels) else f"<pad_index_{idx}>"
         top_actions.append((label, prob))
 
-    divergence = float(
-        kl_divergence(message_dist, baseline_dist).item()
-    )
+    divergence = float(kl_divergence(message_dist, baseline_dist).item())
 
     return {
         "trust_score": trust_score,
@@ -708,12 +627,14 @@ def format_target(message: StructuredMessage) -> str:
         return f"Host_id={message.target_id}"
 
     if message.target_type == TargetType.SUBNET:
-        return f"Subnet_id={message.target_id} (no subnet vocabulary exists -- see schema.py)"
+        return f"Subnet_id={message.target_id}"
 
     return "None"
 
 
-def print_manual_input(sender: int, receivers: List[int], message: StructuredMessage) -> None:
+def print_manual_input(
+    sender: int, receivers: List[int], message: StructuredMessage
+) -> None:
 
     print()
     print("=" * 72)
@@ -737,43 +658,36 @@ def print_encoded_vector(vector: torch.Tensor) -> None:
 
     print()
     print("=" * 72)
-    print("ENCODED 128-D MESSAGE")
+    print("ENCODED MESSAGE")
     print("=" * 72)
     print(f"Shape: {tuple(vector.shape)}")
     print(f"Norm:  {float(vector.norm()):.4f}")
     print(f"First 8 dims: {[round(v, 4) for v in vector[:8].tolist()]}")
 
 
-def print_receiver_prediction(sender: int, receiver: int, result: dict) -> None:
+def print_receiver_prediction(
+    sender: int, receiver: int, result: dict
+) -> None:
+
+    attention = result["attention_weight"]
+    attention_text = (
+        f"{attention:.4f}  (trust already scales this)"
+        if attention is not None
+        else "unavailable (actor did not store attention weights)"
+    )
 
     print()
-    print(f"Agent_{receiver + 1} RECEIVER MODEL PREDICTION (from Agent_{sender + 1})")
+    print(
+        f"Agent_{receiver + 1} RECEIVER MODEL PREDICTION "
+        f"(from Agent_{sender + 1})"
+    )
     print("-" * 60)
-    print(
-        f"Frozen trust(sender->receiver):        "
-        f"{result['trust_score']:.3f}"
-    )
-    print(
-        f"Trained attention weight on this msg:  "
-        f"{result['attention_weight']:.4f}  "
-        f"(trust already scales this)"
-    )
-    print(
-        f"Greedy action WITHOUT this message:    "
-        f"{result['baseline_action']}"
-    )
-    print(
-        f"Greedy action WITH this message:       "
-        f"{result['message_action']}"
-    )
-    print(
-        f"Action changed by this message:        "
-        f"{result['action_changed']}"
-    )
-    print(
-        f"KL(with_message || without_message):   "
-        f"{result['kl_divergence']:.5f}"
-    )
+    print(f"Frozen trust(sender->receiver):        {result['trust_score']:.3f}")
+    print(f"Trained attention weight on this msg:  {attention_text}")
+    print(f"Greedy action WITHOUT this message:    {result['baseline_action']}")
+    print(f"Greedy action WITH this message:       {result['message_action']}")
+    print(f"Action changed by this message:        {result['action_changed']}")
+    print(f"KL(with_message || without_message):   {result['kl_divergence']:.5f}")
     print("Top action probabilities WITH this message:")
     for label, prob in result["top_actions"]:
         print(f"    {prob:.4f}  {label}")
@@ -785,17 +699,24 @@ def print_receiver_prediction(sender: int, receiver: int, result: dict) -> None:
 
 def main() -> None:
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--checkpoint",
+        default=os.environ.get("CHECKPOINT", CHECKPOINT_PATH),
+        help="Path to the .pt checkpoint (default: CHECKPOINT_PATH).",
+    )
+    args = parser.parse_args()
+
     print()
     print("=" * 72)
     print("CYBER MARL - MANUAL INPUT -> MODEL PREDICTION TEST")
     print("=" * 72)
     print("Message fields are YOUR input. Everything after encoding is")
-    print("computed by the real trained model -- see this file's module")
-    print("docstring for the exact traced path and its limits.")
+    print("computed by the real trained model.")
     print("=" * 72)
 
     ppo, num_host_targets, num_subnet_targets = load_trained_mappo(
-        CHECKPOINT_PATH
+        args.checkpoint
     )
 
     print()
@@ -913,7 +834,7 @@ def main() -> None:
         "Note: trust was loaded from the checkpoint and never updated. "
         "No PPO update was performed. The message content above is "
         "exactly what you typed; everything under RECEIVER MODEL "
-        "PREDICTION was computed by a real forward pass through the "
+        "PREDICTION came from a real forward pass through the "
         "checkpoint's trained SharedActor."
     )
 

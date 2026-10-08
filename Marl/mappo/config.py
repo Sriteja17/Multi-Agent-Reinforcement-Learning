@@ -46,12 +46,9 @@ ACTION_DIM = LARGE_ACTION_DIM
 TOTAL_EPISODES = 1000                             
 
 ROLLOUT_STEPS = 512
-
 UPDATE_EPOCHS = 5
 # Was 10
-
-MINIBATCH_SIZE = 256
-
+MINIBATCH_SIZE = 256 
 # General learning rate
 # Kept because mappo.py imports this value.
 LEARNING_RATE = 3e-4
@@ -97,8 +94,8 @@ PRINT_EVERY = 10
 
 SAVE_EVERY = 500
 
-CHECKPOINT_DIR = "checkpoints/latest"
-LOG_DIR = "evaluation/latest"
+CHECKPOINT_DIR = "checkpoints/worse"
+LOG_DIR = "evaluation/worse"
 
 
 # ==========================================================

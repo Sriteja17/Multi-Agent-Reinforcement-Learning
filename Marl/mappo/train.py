@@ -223,7 +223,7 @@ def pad_observation(obs, real_dim):
             f"mission + k*SUBNET_BLOCK_DIM + messages for any integer "
             f"k in [0, {NUM_HQ_SUBNETS}] -- pad_observation's layout "
             f"assumption no longer matches the environment."
-        )
+        )   
 
     # Mission
     padded[:MISSION_DIM] = obs[:MISSION_DIM]

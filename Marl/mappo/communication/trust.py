@@ -80,7 +80,7 @@ class DynamicTrust:
 
     where:
 
-        alpha = evidence for useful/correct information
+        alpha = evidence for useful/correct information 
         beta  = evidence for incorrect/useless information
 
     The matrix is directional.

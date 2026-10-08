@@ -302,13 +302,9 @@ class MAPPO:
         # ------------------------------------------------------
         # Runtime communication state
         # ------------------------------------------------------
-
         self.previous_messages = None
-
         self.current_messages = None
-
         self.current_decoded_messages = None
-
         self.trust_weights = None
 
     # ==========================================================
@@ -493,56 +489,41 @@ class MAPPO:
         distribution = Categorical(
             logits=logits
         )
-
         action = distribution.sample()
-
         log_prob = distribution.log_prob(
             action
         )
-
         entropy = distribution.entropy()
-
         # ------------------------------------------------------
         # Centralized critic
         # ------------------------------------------------------
-
         value = None
-
         if global_state is not None:
-
             global_state = self._to_tensor(
                 global_state,
                 dtype=torch.float32,
             )
-
             values = self.critic(
                 global_state
             )
 
             if agent_id is not None:
-
                 value = values[agent_id]
-
                 if self.value_norm is not None:
-
                     value = (
                         self.value_norm.denormalize(
                             value
                         )
                     )
-
             else:
-
                 value = values
-
                 if self.value_norm is not None:
-
                     value = (
                         self.value_norm.denormalize(
                             value
                         )
                     )
-
+                    
         return (
             action.item(),
             log_prob.detach(),
@@ -961,7 +942,6 @@ class MAPPO:
         if messages is None:
 
             messages = self.previous_messages
-
         if messages is None:
 
             return None
