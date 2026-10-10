@@ -34,3 +34,5 @@ CybORG/Emulator/AWS/Config/awsconfig.ini
 
 .ipynb_checkpoints/
 .idea
+
+/venv/
