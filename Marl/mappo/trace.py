@@ -71,6 +71,8 @@ from .evaluate import (
     select_action_greedy,
 )
 
+from .explainability import explain_decision, format_explanation, save_explanations_json
+
 LINE = "=" * 60
 THIN = "-" * 60
 
@@ -259,6 +261,7 @@ def run_trace(checkpoint_path, steps, seed, red_agent_name, update_trust):
     # Messages generated at t-1 (None at the first decision step).
     previous_vectors = None          # [NUM_AGENTS, 128] tensor
     previous_structured = None       # list[StructuredMessage], index = sender
+    explanation_reports = []
     start = time.time()
     for t in range(steps):
 
@@ -319,6 +322,26 @@ def run_trace(checkpoint_path, steps, seed, red_agent_name, update_trust):
                     f"Agent {agent_id} selected action {action}, which the "
                     "existing action mask marks as invalid."
                 )
+
+            # Explain this already-selected action using the same inputs as the policy.
+            report = explain_decision(
+                ppo=ppo,
+                env=env,
+                agent_id=agent_id,
+                agent_name=name,
+                timestep=t,
+                observation=obs_array[agent_id],
+                action_mask=mask,
+                selected_action=action,
+                received_messages=received_messages,
+                trust_weights=trust_weights,
+                host_active_mask=host_active_masks[agent_id],
+                previous_structured_messages=previous_structured,
+                top_k=5,
+                include_counterfactuals=True,
+            )
+            print(format_explanation(report))
+            explanation_reports.append(report)
 
             meta = describe_actions(env, name)
             print("  Selected action:")
@@ -412,6 +435,9 @@ def run_trace(checkpoint_path, steps, seed, red_agent_name, update_trust):
             print()
             print("(episode ended)")
             break
+    output_path = f"evaluation/explanations/decision_trace_seed{seed}.json"
+    saved_path = save_explanations_json(explanation_reports, output_path)
+    print(f"Saved decision explanations to: {saved_path}")
     end = time.time()
     print(f"TOTAL infrence - {end - start}")
 

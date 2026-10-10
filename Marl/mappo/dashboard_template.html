@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CC4 MARL: Communication and Trust</title>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--ink:#1c2330;--mut:#6b7686;--line:#dde1e8;--acc:#2f6bff;--good:#1f9d63;--warn:#e0a020;--bad:#d8453b}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f141c;--card:#182030;--ink:#e7ebf2;--mut:#93a0b4;--line:#2a3448;--acc:#5b8cff;--good:#38c184;--warn:#e8b23a;--bad:#f0625a}}
+:root[data-theme="dark"]{--bg:#0f141c;--card:#182030;--ink:#e7ebf2;--mut:#93a0b4;--line:#2a3448;--acc:#5b8cff;--good:#38c184;--warn:#e8b23a;--bad:#f0625a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,sans-serif}
+header{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+h1{font-size:17px;margin:0}main{max-width:1100px;margin:0 auto;padding:14px}
+.ctl,.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.ctl{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.ctl input[type=range]{flex:1;min-width:160px}
+button,select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer}
+button.p,nav button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.card h2{font-size:14px;margin:0 0 8px}.grid{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.mut{color:var(--mut);font-size:12px}svg{width:100%;height:auto;display:block}
+.msg{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px;display:flex;flex-wrap:wrap;gap:6px 12px;justify-content:space-between}
+.pill{font-size:11px;padding:1px 8px;border-radius:99px;color:#fff;font-weight:600}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%}td,th{padding:7px 9px;text-align:center;border:1px solid var(--line);font-size:13px}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px}
+.flow span{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+.row{display:flex;align-items:center;gap:8px;margin:4px 0}.row .l{width:190px;flex:none}.bar{height:14px;border-radius:4px;background:var(--acc)}
+</style></head><body>
+<header><h1>CC4 MARL: Structured Communication and Dynamic Trust</h1><span class="mut" id="meta"></span><button id="th">Theme</button></header>
+<main>
+<div class="ctl"><button class="p" id="play">Play</button><span>Step <b id="tl">0</b></span><input type="range" id="sl" min="0" value="0"><span class="mut" id="ph"></span></div>
+<nav id="nav"></nav><div id="view"></div></main>
+<script>
+const D=/*__DATA__*/null;
+const $=id=>document.getElementById(id),S=D.steps,T=S.length,Z=D.meta.zones,N=5;
+const PH=['Pre-planning','Mission A','Mission B'];
+const tabs=['Network','Communication','Trust and attention','Action mask','Ablation'];
+let tab=0,t=0,timer=null,ls=0,lr=1,ma=0;
+$('sl').max=T-1;
+$('meta').textContent=`${D.meta.checkpoint} · vs ${D.meta.red_agent} · seed ${D.meta.seed} · trust ${D.meta.trust_frozen?'frozen':'updating'}`;
+$('nav').innerHTML=tabs.map((n,i)=>`<button data-i="${i}">${n}</button>`).join('');
+$('nav').onclick=e=>{if(e.target.dataset.i){tab=+e.target.dataset.i;draw()}};
+$('sl').oninput=e=>{t=+e.target.value;draw()};
+$('play').onclick=()=>{if(timer){clearInterval(timer);timer=null;$('play').textContent='Play'}else{$('play').textContent='Pause';timer=setInterval(()=>{t=(t+1)%T;$('sl').value=t;draw()},300)}};
+$('th').onclick=()=>{const d=document.documentElement;d.dataset.theme=getComputedStyle(d).getPropertyValue('--bg').trim()==='#0f141c'?'light':'dark'};
+const col=v=>v>=.6?'var(--good)':v>=.4?'var(--warn)':'var(--bad)';
+const ok=m=>m.q!==null&&m.q>=.5;
+const fx=v=>v===null||v===undefined?'n/a':(+v).toFixed(2);
+
+function network(){
+ const P=[[180,270],[70,345],[520,270],[630,345],[350,150]],C=[110,130],I=[350,40],s=S[t];
+ const E=[[I,C],[I,P[4]],[I,P[0]],[I,P[2]],[P[0],P[1]],[P[2],P[3]],[C,P[4]]];
+ let h='<svg viewBox="0 0 700 390">';
+ E.forEach(e=>h+=`<line x1="${e[0][0]}" y1="${e[0][1]}" x2="${e[1][0]}" y2="${e[1][1]}" stroke="var(--line)" stroke-width="2"/>`);
+ s.msgs.forEach((m,a)=>{if(m.empty||m.q===null)return;for(let r=0;r<N;r++)if(r!==a)
+  h+=`<line x1="${P[a][0]}" y1="${P[a][1]}" x2="${P[r][0]}" y2="${P[r][1]}" stroke="${ok(m)?'var(--good)':'var(--bad)'}" stroke-dasharray="5 4" opacity=".55"/>`});
+ h+=`<circle cx="${I[0]}" cy="${I[1]}" r="24" fill="var(--bg)" stroke="var(--mut)"/><text x="${I[0]}" y="${I[1]+4}" text-anchor="middle" fill="var(--ink)" font-size="11">Internet</text>`;
+ h+=`<circle cx="${C[0]}" cy="${C[1]}" r="30" fill="var(--bad)" opacity=".2" stroke="var(--bad)"/><text x="${C[0]}" y="${C[1]+4}" text-anchor="middle" fill="var(--ink)" font-size="11">Contractor</text>`;
+ P.forEach((p,a)=>{const c=s.comp[a],u=s.susp[a],f=c>0?(c>2?'var(--bad)':'var(--warn)'):u>0?'var(--warn)':'var(--good)';
+  h+=`<circle cx="${p[0]}" cy="${p[1]}" r="34" fill="${f}" opacity=".9"/><text x="${p[0]}" y="${p[1]-2}" text-anchor="middle" fill="#000" font-size="12" font-weight="700">A${a}</text><text x="${p[0]}" y="${p[1]+12}" text-anchor="middle" fill="#000" font-size="10">${Z[a]} · ${c} comp / ${u} susp</text>`});
+ return h+'</svg>'}
+
+function card(m){
+ const tgt=m.target_type==='NONE'?'':` on ${m.target_type}_${m.target_id}`;
+ const v=m.q===null?'<span class="pill" style="background:var(--mut)">'+(m.empty?'EMPTY':'UNGRADED')+'</span>':`<span class="pill" style="background:${ok(m)?'var(--good)':'var(--bad)'}">${ok(m)?'CORRECT':'WRONG'}</span>`;
+ const sc=m.sc?`quality ${fx(m.q)} · ev ${fx(m.sc.event)} tg ${fx(m.sc.target)} th ${fx(m.sc.threat)} st ${fx(m.sc.status)}`:'';
+ return `<div class="msg"><div><b>Agent ${m.sender} → all</b>: ${m.event_type}${tgt}<br><span class="mut">threat ${m.threat_level} · conf ${fx(m.confidence)} · ${m.status} · ${m.priority}</span></div><div style="text-align:right">${v}<br><span class="mut">${sc}</span></div></div>`}
+
+function heat(M,rowsAreReceivers,fmt){
+ let h='<div class="tw"><table><tr><th>receiver ↓ / sender →</th>'+Z.map((z,i)=>`<th>A${i}</th>`).join('')+'</tr>';
+ for(let r=0;r<N;r++){h+=`<tr><th>A${r} (${Z[r]})</th>`;for(let s=0;s<N;s++){
+  if(s===r){h+='<td class="mut">–</td>';continue}
+  const v=rowsAreReceivers?M[r]?.[s]:M[s][r];
+  h+=v===null||v===undefined?'<td class="mut">n/a</td>':`<td style="background:${fmt(v)};color:#000;font-weight:600">${(+v).toFixed(2)}</td>`}h+='</tr>'}
+ return h+'</table></div>'}
+
+function line(){
+ const W=640,H=200;let pts=S.slice(0,t+1).map((x,i)=>`${30+i/Math.max(1,T-1)*(W-40)},${10+(1-x.trust[ls][lr])*(H-30)}`).join(' ');
+ return `<svg viewBox="0 0 ${W} ${H}"><rect x="30" y="10" width="${W-40}" height="${H-30}" fill="none" stroke="var(--line)"/><polyline points="${pts}" fill="none" stroke="var(--acc)" stroke-width="2.5"/><text x="4" y="18" fill="var(--mut)" font-size="10">1</text><text x="4" y="${H-22}" fill="var(--mut)" font-size="10">0</text></svg>`}
+
+const opts=(sel)=>Z.map((z,i)=>`<option value="${i}" ${i===sel?'selected':''}>A${i} ${z}</option>`).join('');
+
+function draw(){
+ const s=S[t];$('tl').textContent=`${t} / ${T-1}`;$('ph').textContent='Phase: '+(PH[s.phase]||s.phase)+' · step reward '+s.reward.reduce((a,b)=>a+b,0).toFixed(1);
+ [...$('nav').children].forEach((b,i)=>b.classList.toggle('on',i===tab));
+ let h='';
+ if(tab===0)h=`<div class="grid"><div class="card"><h2>Network (colour = ground-truth compromise)</h2>${network()}<p class="mut">Dashed = messages this step (green graded correct, red wrong).</p></div>
+  <div class="card"><h2>Blue actions this step</h2>${s.actions.map((a,i)=>`<div class="row"><b>A${i}</b> ${a}</div>`).join('')}<h2 style="margin-top:12px">Messages</h2>${s.msgs.filter(m=>!m.empty).map(card).join('')||'<span class="mut">All agents sent empty messages.</span>'}</div></div>`;
+ if(tab===1)h=`<div class="card"><h2>Pipeline</h2><div class="flow"><span>Local hidden</span>→<span>Decoder (7 fields)</span>→<span>StructuredMessage</span>→<span>Encoder</span>→<span>128-d vector</span>→<span>Trust-scaled attention</span>→<span>Action</span></div></div><div class="card"><h2>All messages at step ${t}</h2>${s.msgs.map(card).join('')}</div>`;
+ if(tab===2)h=`<div class="grid"><div class="card"><h2>Trust: receiver's trust in sender</h2>${heat(s.trust,false,col)}</div>
+  <div class="card"><h2>Attention actually paid to each sender</h2>${s.att.every(x=>x===null)?'<span class="mut">No messages received yet.</span>':heat(s.att,true,v=>`color-mix(in srgb,var(--acc) ${Math.round(v*250)}%,transparent)`)}</div></div>
+  <div class="card"><h2>Trust over time <select id="ls">${opts(ls)}</select> → <select id="lr">${opts(lr)}</select></h2>${line()}</div>`;
+ if(tab===3){const m=s.mask[ma];h=`<div class="card"><h2>Adaptive Action Mask <select id="ma">${opts(ma)}</select></h2><p>Enabled actions: <b>${m.enabled}</b> · suppressed by AAM: <b>${m.suppressed}</b></p>${m.reasons.map(r=>`<div class="mut">• ${r}</div>`).join('')||'<span class="mut">Nothing suppressed this step.</span>'}</div>`}
+ if(tab===4){const a=D.ablation;h=`<div class="card"><h2>Ablation</h2>${a?a.map(x=>`<div class="row"><span class="l">${x.label}</span><div class="bar" style="width:${Math.abs(x.mean)/Math.max(...a.map(y=>Math.abs(y.mean)))*380}px"></div>${x.mean} ± ${x.std}</div>`).join(''):'<span class="mut">No ablation data. Re-run with --ablation file.json.</span>'}</div>`}
+ $('view').innerHTML=h;
+ if(tab===2){$('ls').onchange=e=>{ls=+e.target.value;draw()};$('lr').onchange=e=>{lr=+e.target.value;draw()}}
+ if(tab===3)$('ma').onchange=e=>{ma=+e.target.value;draw()}
+}
+draw();
+</script></body></html>
